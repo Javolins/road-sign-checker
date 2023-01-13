@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import { Link as LinkRute } from 'react-router-dom';
 
@@ -14,14 +15,22 @@ const Sidebar = ({ children }: SidebarProps) => {
       border: "1px solid rgba(0, 0, 0, 0.12)",
       backgroundColor: "#FCFBFA"
     }}>
-      <Box sx={{ display: "flex", gap: "0.25rem" }} component="header">
-        <LinkRute to="/Home">
-          <img src="/Road-sign-recognizer-icon.svg" alt="Road sign recognizer icon" width={50} height={50} />
-          <img src="/Road-sign-recognizer-logo-text.svg" alt="Road sign recognizer" />
-        </LinkRute>
+      <Box>
+        <Box sx={{ display: "flex", gap: "0.25rem" }} component="header">
+          <LinkRute to="/Home">
+            <img src="/Road-sign-recognizer-icon.svg" alt="Road sign recognizer icon" width={50} height={50} />
+            <img src="/Road-sign-recognizer-logo-text.svg" alt="Road sign recognizer" />
+          </LinkRute>
+        </Box>
+        {children}
       </Box>
-      {children}
+      <Button sx={{
+        position: "absolute",
+        bottom: "30px",
+        left: "60px",
+      }} variant="contained" >Send Photo</Button>
     </Box>
+
   )
 }
 
