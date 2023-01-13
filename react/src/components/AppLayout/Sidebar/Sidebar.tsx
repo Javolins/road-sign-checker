@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import { Link as LinkRute } from 'react-router-dom';
+import SendPhoto from '../../SendPhoto/SendPhoto';
 
 
 interface SidebarProps {
@@ -24,11 +25,8 @@ const Sidebar = ({ children }: SidebarProps) => {
         </Box>
         {children}
       </Box>
-      <Button sx={{
-        position: "absolute",
-        bottom: "30px",
-        left: "60px",
-      }} variant="contained" >Send Photo</Button>
+      <SendPhoto/>
+
     </Box>
 
   )
