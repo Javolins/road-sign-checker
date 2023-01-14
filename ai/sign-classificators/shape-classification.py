@@ -24,7 +24,7 @@ if __name__ == '__main__':
     cv2.imshow("znak", znakImage)
 
     znakShape = binarizeToExtractShapeMask(znakImage)
-    cv2.imshow("znak shaoe", znakShape)
+    #cv2.imshow("znak shaoe", znakShape)
 
     border = 10
     znakShape2 = cv2.copyMakeBorder(znakShape, border, border, border, border, cv2.BORDER_CONSTANT, value=0)
@@ -42,7 +42,22 @@ if __name__ == '__main__':
     shapeRGB = cv2.cvtColor(znakShape2, cv2.COLOR_GRAY2RGB)
 
     #draw all points of contour as red with thickness of 3
-    znakWithContour = cv2.drawContours(shapeRGB, contours, -1, (0, 0, 255), 1)
+    znakWithContour = cv2.drawContours(shapeRGB, contours, -1, (255, 0, 0), 1)
+
+    #draw axis
+    contoursSharpened = cv2.approxPolyDP(contours[0], 10, True)
+    axis = cv2.fitLine(contoursSharpened, cv2.DIST_L2, 0, 0.01, 0.01)
+    [vx, vy, x, y] = axis
+    rows, cols = znakShape2.shape[:2]
+    #draw anchor point of axis
+    start = (int(x), int(y))
+    magnitude = np.sqrt(rows**2 + cols**2)/4
+    vector = (magnitude*vx, magnitude*vy)
+    end = (int(start[0] + vector[0]), int(start[1] + vector[1]))
+    znakWithContour = cv2.line(znakWithContour, start, end, (0, 0, 255))
+    znakWithContour = cv2.circle(znakWithContour, start, 3, (0, 0, 255))
+    #image = cv2.circle(znakWithContour, (x, y), radius=0, color=(0, 0, 255), thickness=-1)
+
     cv2.imshow("znak contour", znakWithContour)
 
     #circularity

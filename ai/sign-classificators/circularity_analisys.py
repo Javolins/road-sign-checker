@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
         CIRCLE_THRESHOLD = 0.95
         isNotCircle = circularity < CIRCLE_THRESHOLD
-        
+
         if isNotCircle:
             contoursSharpened = cv2.approxPolyDP(mainContour, 10, True)
             numberOfVertices = len(contoursSharpened)
@@ -47,14 +47,20 @@ if __name__ == '__main__':
                 shape = "octagon"
             else:
                 shape = "polygon of " + numberOfVertices + "vertices"
+
+            axis = cv2.fitLine(mainContour, cv2.DIST_L2, 0, 0.01, 0.01)
+
         else:
             shape = "circle"
+            axis = None
 
         znakiElement = {
             "fileName": fileName,
             "circularity": circularity,
-            "shape": shape
+            "axis": axis,
+            "shape": shape,
         }
+
         znakiDataset.append(znakiElement)
 
     for znakiElement in znakiDataset:
