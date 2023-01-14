@@ -1,27 +1,9 @@
 import os
 import cv2
-import numpy as np
 
 import sys
 
-def binarizeToExtractShapeMask(image):
-    imageGray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-
-    t, binarizedOtsu = cv2.threshold(imageGray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-
-    maskOtsu = cv2.bitwise_not(binarizedOtsu)
-
-    # add border to close without expansion
-    border = 50
-    maskOtsuExpanded = cv2.copyMakeBorder(maskOtsu, 50, 50, 50, 50, cv2.BORDER_CONSTANT, value=0)
-    # cv2.imshow("znak border", znakBinary3)
-    # cv2.waitKey(0)
-
-    kernel = np.ones((40, 40), np.uint8)
-    maskClosed = cv2.morphologyEx(maskOtsuExpanded, cv2.MORPH_CLOSE, kernel)
-
-    shapeMask = maskClosed[border:-border, border:-border]
-    return shapeMask
+from image_analisys_functions import *
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
@@ -48,11 +30,25 @@ if __name__ == '__main__':
     znakShape2 = cv2.copyMakeBorder(znakShape, border, border, border, border, cv2.BORDER_CONSTANT, value=0)
 
     contours, hierarchy = cv2.findContours(znakShape2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    contoursSharpened = cv2.approxPolyDP(contours[0], 10, True)
+    #contoursSharpened = cv2.approxPolyDP(contours[0], 10, True)
+    #contours = [contoursSharpened]
+
+    #jesli wspolczynnik kolowosci jest bliski 1 to znak jest kołem
+    #w innym przypadku
+    #   jesli da sie go uśrednić do n punktów - n-kąt
+
+    #[vx, vy, x, y] = cv2.fitLine(contours, cv2.DIST_L2, 0, 0.01, 0.01)
 
     shapeRGB = cv2.cvtColor(znakShape2, cv2.COLOR_GRAY2RGB)
 
     #draw all points of contour as red with thickness of 3
-    znakWithContour = cv2.drawContours(shapeRGB, [contoursSharpened], -1, (0, 0, 255), 1)
+    znakWithContour = cv2.drawContours(shapeRGB, contours, -1, (0, 0, 255), 1)
     cv2.imshow("znak contour", znakWithContour)
+
+    #circularity
+    mainContour = contours[0]
+
+    circularity = getCircularity(mainContour)
+    print(circularity)
+
     cv2.waitKey(0)
