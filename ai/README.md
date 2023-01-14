@@ -19,3 +19,17 @@ A-7 - ustąp pierwszeństwa
 B-2 - zakz wjazdu
 C-12 - ruch okrężny
 D-1 - doga z pierwszeństwem
+
+#klasyfikatory
+
+próbki do nauki
+znaki-drogowe.pl
+
+KSZTAŁT
+-trójkąt
+-odwrócony trójkąt
+-koło
+-prostokąt
+-ośmiokąt
+
+ustalane na podstawie binaryzacji zdesaturyzowanego obrazu poddanej zamknięciu morfologicznemu
