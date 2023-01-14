@@ -66,4 +66,10 @@ if __name__ == '__main__':
     circularity = getCircularity(mainContour)
     print(circularity)
 
+    noVertices = getNumberOfVertices(mainContour,  znakShape2.shape[:2])
+    print(noVertices)
+
+    shape = getShape(mainContour, znakShape2.shape[:2])
+    print(shape)
+
     cv2.waitKey(0)
