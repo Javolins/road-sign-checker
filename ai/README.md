@@ -26,10 +26,9 @@ próbki do nauki
 znaki-drogowe.pl
 
 KSZTAŁT
--trójkąt
--odwrócony trójkąt
--koło
--prostokąt
--ośmiokąt
+-trójkąt T
+-koło K
+-prostokąt P
+-ośmiokąt O
 
 ustalane na podstawie binaryzacji zdesaturyzowanego obrazu poddanej zamknięciu morfologicznemu
