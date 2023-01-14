@@ -43,4 +43,17 @@ if __name__ == '__main__':
 
     znakShape = binarizeToExtractShapeMask(znakImage)
     cv2.imshow("znak shaoe", znakShape)
+
+    border = 10
+    znakShape2 = cv2.copyMakeBorder(znakShape, border, border, border, border, cv2.BORDER_CONSTANT, value=0)
+
+    contours, hierarchy = cv2.findContours(znakShape2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    print(contours)
+    print(hierarchy)
+
+    shapeRGB = cv2.cvtColor(znakShape2, cv2.COLOR_GRAY2RGB)
+
+    #draw all points of contour as red with thickness of 3
+    znakWithContour = cv2.drawContours(shapeRGB, contours, -1, (0, 0, 255), 3)
+    cv2.imshow("znak contour", znakWithContour)
     cv2.waitKey(0)
