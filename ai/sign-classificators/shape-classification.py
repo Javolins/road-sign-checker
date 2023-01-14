@@ -1,6 +1,9 @@
 import os
 import cv2
 import numpy as np
+
+import sys
+
 def binarizeToExtractShapeMask(image):
     imageGray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 
@@ -21,11 +24,21 @@ def binarizeToExtractShapeMask(image):
     return shapeMask
 
 if __name__ == '__main__':
-    reposDir = os.path.abspath('./../../..')
-    znakiDir = os.path.abspath(reposDir + '/znaki-sandbox/znaki')
-    znakPath = os.path.abspath(znakiDir + "/B-2.png")
+    if len(sys.argv) < 2:
+        print("provide image path")
+        exit(1)
+
+    if not os.path.exists(sys.argv[1]):
+        print("file does not exist")
+        exit(2)
+
+    znakPath = sys.argv[1]
 
     znakImage = cv2.imread(znakPath)
+    if znakImage is None:
+        print("file is not an image")
+        exit(3)
+
     cv2.imshow("znak", znakImage)
 
     znakShape = binarizeToExtractShapeMask(znakImage)
