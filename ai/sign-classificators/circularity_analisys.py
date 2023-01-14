@@ -30,34 +30,20 @@ if __name__ == '__main__':
             print(filePath + " is not a valid image file")
             exit(4)
 
+        imageSize = znakImage.shape[:2]
+
         mainContour = getZnakContour(znakImage)
-        circularity = getCircularity(mainContour)
 
-        CIRCLE_THRESHOLD = 0.95
-        isNotCircle = circularity < CIRCLE_THRESHOLD
 
-        if isNotCircle:
-            contoursSharpened = cv2.approxPolyDP(mainContour, 10, True)
-            numberOfVertices = len(contoursSharpened)
-            if numberOfVertices == 3:
-                shape = "triangle"
-            elif numberOfVertices == 4:
-                shape = "rectangle"
-            elif numberOfVertices == 8:
-                shape = "octagon"
-            else:
-                shape = "polygon of " + numberOfVertices + "vertices"
+        numberOfVertices = getNumberOfVertices(mainContour, imageSize)
 
-            axis = cv2.fitLine(mainContour, cv2.DIST_L2, 0, 0.01, 0.01)
-
-        else:
-            shape = "circle"
-            axis = None
+        shape = getShape(mainContour, imageSize)
 
         znakiElement = {
             "fileName": fileName,
-            "circularity": circularity,
-            "axis": axis,
+            # "circularity": circularity,
+            # "axis": axis,
+            "no_vertices": numberOfVertices,
             "shape": shape,
         }
 

@@ -1,5 +1,16 @@
 import cv2
 import numpy as np
+
+from enum import Enum
+
+class ZnakShape(Enum):
+    CIRCLE = 1,
+    TRIANGLE = 2,
+    RECTANGLE = 3,
+    OCTAGON = 4,
+    UNKNOWN = 10
+
+
 def binarizeToExtractShapeMask(image):
     imageGray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 
@@ -39,3 +50,30 @@ def getZnakCircularity(znakImage):
     circularity = getCircularity(mainContour)
 
     return circularity
+
+def getNumberOfVertices(mainContour, imageSize):
+    imageDiagonalLength = np.sqrt(imageSize[0] ** 2 + imageSize[1] ** 2)
+    EPSILON_PERCENTAGE = 0.07
+    polygonApproximationEpsilon = EPSILON_PERCENTAGE * imageDiagonalLength
+    contoursSharpened = cv2.approxPolyDP(mainContour, polygonApproximationEpsilon, True)
+    numberOfVertices = len(contoursSharpened)
+    return numberOfVertices
+def getShape(contour, imageSize):
+    #znakMask - binarized image of znak where white pixels represent it
+    circularity = getCircularity(contour)
+
+    CIRCLE_THRESHOLD = 0.95
+    isNotCircle = circularity < CIRCLE_THRESHOLD
+
+    if isNotCircle:
+        numberOfVertices = getNumberOfVertices(contour, imageSize)
+        if numberOfVertices == 3:
+            return ZnakShape.TRIANGLE
+        elif numberOfVertices == 4:
+            return ZnakShape.RECTANGLE
+        elif numberOfVertices == 8:
+            return ZnakShape.OCTAGON
+        else:
+            return ZnakShape.UNKNOWN
+    else:
+        return ZnakShape.CIRCLE
