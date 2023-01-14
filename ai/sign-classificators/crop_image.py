@@ -15,20 +15,22 @@ HUE_MARGIN = 10
 SATURATION_MARGIN_MIN = 50
 VALUE_MARGIN_MIN = 50
 
+def readImageAsRGB(filename):
+    BGR_image = cv2.imread(filename)
+    RGB_image = cv2.cvtColor(BGR_image, cv2.COLOR_BGR2RGB)
+    return RGB_image
+
 def readImageAsHSV(filename):
     BGR_image = cv2.imread(filename)
     HSV_image = cv2.cvtColor(BGR_image, cv2.COLOR_BGR2HSV)
     return HSV_image
-
     
 def getParametersFromImage(HSV_image):
     image_size = np.shape(HSV_image)[0]
-    FILL_RATIO = 0.5
-    return image_size, FILL_RATIO
-    
+    return image_size
 
 def findMainColor(HSV_image):
-    image_size, fill_ratio = getParametersFromImage(HSV_image)
+    image_size = getParametersFromImage(HSV_image)
     middle_px = image_size // 2
     counter = 0
     distance = 0
@@ -50,7 +52,6 @@ def findMainColor(HSV_image):
     hue_mean = circmean(hue_list, high=180)
     saturation_mean = saturation_sum / len(hsv_list)
     value_mean = value_sum / len(hsv_list)
-    print (hue_mean, saturation_mean, value_mean)
     return hue_mean, saturation_mean, value_mean    
     
 def isEdge(x, y, middle, distance):
@@ -85,12 +86,25 @@ def makeMask(HSV_image, HSV_mean):
         mask = mask1 | mask2
     else:
         mask = cv2.inRange(HSV_image, lowerb = lowerBound, upperb = upperBound)
+    
+    temp = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    contours = temp[-2]
+    cv2.drawContours(mask, contours, contourIdx=-1, color=(255,255,255),thickness=-1)
+    
     return mask
+
+def applyMask(img, mask):
+    return cv2.bitwise_and(img,img,mask = mask)
+
+def getCroppedSign(filename):
+    hue_mean, saturation_mean, value_mean = findMainColor(readImageAsHSV(filename))
+    HSV_mean = (hue_mean, saturation_mean, value_mean)
+    mask = makeMask(readImageAsHSV(filename), HSV_mean)
+    croppedSign = applyMask(readImageAsRGB(filename), mask)
+    return croppedSign
     
 
 # main
-hue_mean, saturation_mean, value_mean = findMainColor(readImageAsHSV("znaki/A-7_2.jpg"))
-HSV_mean = (hue_mean, saturation_mean, value_mean)
-mask = makeMask(readImageAsHSV("znaki/A-7_2.jpg"), HSV_mean)
-plt.imshow(mask, cmap='gray')
-plt.savefig("aaaaaaa.jpg")
+# test = getCroppedSign("./znaki/B-2_2.jpeg")
+# plt.imshow(test)
+# plt.savefig("test.jpg")
