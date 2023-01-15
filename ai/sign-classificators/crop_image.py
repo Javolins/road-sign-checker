@@ -40,6 +40,7 @@ def getParametersFromImage(HSV_image):
     image_size = np.shape(HSV_image)[0]
     return image_size
 
+
 def getMeanHSV(HSV_list):
     hue_list = []
     saturation_sum = 0
@@ -52,6 +53,7 @@ def getMeanHSV(HSV_list):
     saturation_mean = saturation_sum / len(HSV_list)
     value_mean = value_sum / len(HSV_list)
     return (hue_mean, saturation_mean, value_mean)
+
 
 def getStdHSV(HSV_list):
     hue_list = []
@@ -100,6 +102,7 @@ def isBlack(HSV_value):
 def isWhite(HSV_value):
     return HSV_value[2] > WHITE_THRESHOLD_VALUE_MIN and HSV_value[1] < WHITE_THRESHOLD_SATURATION_MAX
 
+
 def getHSVimageValuesFromMask(HSV_image, BIN_mask):
     HSV_list = []
     for i in range(np.shape(HSV_image)[0]):
@@ -108,12 +111,15 @@ def getHSVimageValuesFromMask(HSV_image, BIN_mask):
                 HSV_list.append(HSV_image[i][j])
     return HSV_list
 
+
 def applyMask(img, mask):
     return cv2.bitwise_and(img, img, mask=mask)
 
-    """_summary_ Funkcja zwracająca maskę obejmującą środek znaku bez obramówki
-    """
+
 def getInsideMask(HSV_image, HSV_mean):
+    """
+    Funkcja zwracająca maskę obejmującą środek znaku bez obramówki
+    """
     lower_hue = HSV_mean[0] - HUE_MARGIN
     if lower_hue < 0:
         lower_hue += HUE_MAX_THRESHOLD
@@ -126,11 +132,13 @@ def getInsideMask(HSV_image, HSV_mean):
     if upper_hue > HUE_MAX_THRESHOLD:
         upper_hue -= HUE_MAX_THRESHOLD
 
-    lowerBound = (lower_hue, HSV_mean[1] - SATURATION_MARGIN_MIN, HSV_mean[2] - VALUE_MARGIN_MIN)
+    lowerBound = (
+        lower_hue, HSV_mean[1] - SATURATION_MARGIN_MIN, HSV_mean[2] - VALUE_MARGIN_MIN)
     upperBound = (upper_hue, 255, 255)
 
     if lowerBound[0] > upperBound[0]:
-        mask1 = cv2.inRange(HSV_image, lowerb=(0, lowerBound[1], lowerBound[2]), upperb=upperBound)
+        mask1 = cv2.inRange(HSV_image, lowerb=(
+            0, lowerBound[1], lowerBound[2]), upperb=upperBound)
         mask2 = cv2.inRange(HSV_image, lowerb=lowerBound, upperb=(
             HUE_MAX_THRESHOLD, upperBound[1], upperBound[2]))
         mask = mask1 | mask2
@@ -144,10 +152,13 @@ def getInsideMask(HSV_image, HSV_mean):
 
     return mask
 
-    """_summary_ Funkcja zwracająca maskę zawierającą obramówkę znaku
-    """
+
 def getBorderMask(inside_mask, contour_width):
-    mask_contour = np.zeros((np.shape(inside_mask)[0], np.shape(inside_mask)[1]))
+    """
+    Funkcja zwracająca maskę zawierającą obramówkę znaku
+    """
+    mask_contour = np.zeros(
+        (np.shape(inside_mask)[0], np.shape(inside_mask)[1]))
     contours, hierarchy = cv2.findContours(
         inside_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cv2.drawContours(mask_contour, contours, -1,
@@ -155,9 +166,11 @@ def getBorderMask(inside_mask, contour_width):
     mask_contour = np.array(mask_contour, dtype=uint8)
     return mask_contour - cv2.bitwise_and(mask_contour, inside_mask)
 
-    """_summary_ Funkcja zwracająca maskę zawierającą wnętrze znaku wraz z obramówką
-    """
+
 def getFinalMask(HSV_image, inside_mask):
+    """
+    Funkcja zwracająca maskę zawierającą wnętrze znaku wraz z obramówką
+    """
     contour_px_iterator = 1
     hue_std = 0
     saturation_std = 0
@@ -165,7 +178,8 @@ def getFinalMask(HSV_image, inside_mask):
     mask = inside_mask
     while (hue_std < HUE_STD_MAX and saturation_std < SATURATION_STD_MAX and value_std < VALUE_STD_MAX):
         mask_border = getBorderMask(mask, contour_px_iterator)
-        mask_border_hsv_list = getHSVimageValuesFromMask(HSV_image, mask_border)
+        mask_border_hsv_list = getHSVimageValuesFromMask(
+            HSV_image, mask_border)
         hue_std = getStdHSV(mask_border_hsv_list)[0]
         saturation_std = getStdHSV(mask_border_hsv_list)[1]
         value_std = getStdHSV(mask_border_hsv_list)[2]
@@ -173,54 +187,59 @@ def getFinalMask(HSV_image, inside_mask):
             mask += mask_border
     return mask
 
-    """_summary_ Funkcja zwracająca środek znaku bez obramówki z obrazu
-    """
+
 def getSignWithoutBordersFromImage(filename):
+    """
+    Funkcja zwracająca środek znaku bez obramówki z obrazu
+    """
     HSV_image = readImageAsHSV(filename)
     HSV_mean = findMainColor(HSV_image)
     mask = getInsideMask(HSV_image, HSV_mean)
     croppedSign = applyMask(readImageAsRGB(filename), mask)
     return croppedSign
 
-    """_summary_ Funkcja zwracająca znak wycięty z obrazu
-    """
+
 def getSignFromImage(filename):
+    """
+    Funkcja zwracająca znak wycięty z obrazu
+    """
     HSV_image = readImageAsHSV(filename)
     HSV_mean = findMainColor(HSV_image)
     inside_mask = getInsideMask(HSV_image, HSV_mean)
     mask_with_border = getFinalMask(HSV_image, inside_mask)
     return applyMask(readImageAsRGB(filename), mask_with_border)
 
-# if __name__ == '__main__':
-#     if len(sys.argv) < 2:
-#         print("provide image path")
-#         exit(1)
 
-#     if not os.path.exists(sys.argv[1]):
-#         print("file does not exist")
-#         exit(2)
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print("provide image path")
+        exit(1)
 
-#     znakPath = sys.argv[1]
+    if not os.path.exists(sys.argv[1]):
+        print("file does not exist")
+        exit(2)
 
-#     # does OpenCV return image as BGR by default?
-#     znakImage = cv2.imread(znakPath)
-#     if znakImage is None:
-#         print("file is not an image")
-#         exit(3)
+    znakPath = sys.argv[1]
 
-#     cv2.imshow("znak", znakImage)
+    # does OpenCV return image as BGR by default?
+    znakImage = cv2.imread(znakPath)
+    if znakImage is None:
+        print("file is not an image")
+        exit(3)
 
-#     znakImageHSV = cv2.cvtColor(znakImage, cv2.COLOR_BGR2HSV)
-#     cv2.imshow("znak HSV", znakImageHSV)
+    cv2.imshow("znak", znakImage)
 
-#     hue_mean, saturation_mean, value_mean = findMainColor(znakImageHSV)
-#     HSV_mean = (hue_mean, saturation_mean, value_mean)
-#     mask = makeMask(znakImageHSV, HSV_mean)
+    znakImageHSV = cv2.cvtColor(znakImage, cv2.COLOR_BGR2HSV)
+    cv2.imshow("znak HSV", znakImageHSV)
 
-#     cv2.imshow("mask", mask)
+    hue_mean, saturation_mean, value_mean = findMainColor(znakImageHSV)
+    HSV_mean = (hue_mean, saturation_mean, value_mean)
+    mask = makeMask(znakImageHSV, HSV_mean)
 
-#     cv2.waitKey(0)
+    cv2.imshow("mask", mask)
+
+    cv2.waitKey(0)
 
 
-plt.imshow(getSignFromImage("./znaki/A-2.png"))
-plt.savefig("test.jpg")
+# plt.imshow(getSignFromImage("./znaki/A-2.png"))
+# plt.savefig("test.jpg")
