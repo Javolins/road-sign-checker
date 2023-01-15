@@ -84,6 +84,19 @@ def findMainColor(HSV_image):
                     counter += 1
                     hsv_list.append(HSV_image[i][j])
         distance += 1
+
+    # inside_mask = np.zeros((np.shape(HSV_image)[0], np.shape(HSV_image)[1]))
+    # inside_mask[middle_px][middle_px] = 1
+    # inside_mask = np.array(inside_mask, dtype=uint8)
+    # while (counter < COLORFUL_PIXELS_REQUIRED):
+    #     border_mask = getBorderMask(inside_mask, 2)
+    #     border_hsv_list = getHSVimageValuesFromMask(HSV_image,border_mask)
+    #     for hsv in border_hsv_list:
+    #         if isColorful(hsv):
+    #             counter += 1
+    #             hsv_list.append(hsv)
+    #     inside_mask += border_mask
+
     return getMeanHSV(hsv_list)
 
 
