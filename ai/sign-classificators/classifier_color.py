@@ -1,32 +1,6 @@
 from sklearn.cluster import KMeans
-import numpy as np
 import cv2
-
-def n_dominant_colors(imRGB ,n=3):
-    
-    #deleting whit fragments
-    # if mask == None:
-    #     lower = np.array([0, 0, 30])  # -- Lower range --
-    #     upper = np.array([255, 255, 255])  # -- Upper range --
-    #     mask = cv2.inRange(imRGB, lower, upper)
-    # res = cv2.bitwise_and(imRGB, imRGB, mask=mask)  # -- Contains pixels having the gray color--
-
-    imRGB = imRGB.reshape((imRGB.shape[1] * imRGB.shape[0], 3))   
-
-    # save image after operations
-
-    # using k-means to cluster pixels
-    kmeans = KMeans(n_clusters=n, n_init='auto')
-    kmeans.fit(imRGB)
-
-    # the cluster centers are our dominant colors.
-    kmeans.cluster_centers_
-    
-    return kmeans.cluster_centers_.astype(np.uint8)
-
-def n_dominant_colors_conv_to_hsv(imRGB,n=3): 
-    return cv2.cvtColor(np.uint8([n_dominant_colors(imRGB ,n)]), cv2.COLOR_RGB2HSV) # type: ignore
-
+import numpy as np
 
 #color , color2 - colory porównywane między sobą in HSV
 def dopasowanieKoloru(a, color2):
@@ -38,73 +12,101 @@ def dopasowanieKoloru(a, color2):
 def checkWhite(color):
     return abs(color[2]) / 255.0   *(abs(255-color[1]) / 255.0)**3   
 
+#1 if color is black
 def checkBlack(color):    
-    return 1-(abs(255-color[2]) / 255.0   )
+    return (abs(255-color[2]) / 255.0   )
+
+def howDif(mesure , expected ):
+    return 1 - abs(mesure -expected)
 
 class estymarotZnaku:
     def __init__(self):
+        # self.i = 0 ;
         pass
-        
-    def est(self, arr):            
+    #arr [nx3] coveraget [n]
+    def est(self, arr, coverage):            
 
-        return [self.checkA(arr),          
-        self.checkB(arr) ,          
-        self.checkC(arr)]
+        return [self.checkA(arr, coverage, sum(coverage)),          
+        self.checkB(arr, coverage,sum(coverage)) ,          
+        self.checkC(arr, coverage,sum(coverage))]
     
-    def checkA(self,col):
+    def checkA(self,col,coverage, allField):
         yelow = [ 30,   240,   240]
         red =   [0,   240,   240]
         yd = 0
+        yc = 0
         bd = 0
+        bc = 0
         rd = 0
-        for i in col:
-            yd= max(yd,dopasowanieKoloru(yelow, i))
-            rd= max(rd,dopasowanieKoloru(red, i))
-            bd= max(bd,1-checkWhite( i))
-        return yd*.5+rd*.4 +bd*.1
+        rc = 0
+        for i, f in zip(col,coverage):
+            tmp = dopasowanieKoloru(yelow, i)
+            if(tmp > yd):
+                yd = tmp
+                yc = f
+            tmp = dopasowanieKoloru(red, i)
+            if(tmp > rd):
+                rd = tmp
+                rc = f
+            tmp = checkBlack( i)
+            if(tmp > bd):
+                bd = tmp
+                bc = f
+        sum = bc+yc
+        if sum > allField:
+            sum = max(bc,yc)   
+        return (yd*.5 +bd*.1)*howDif((sum)/allField, 0.8) +rd*.4*howDif(rc/allField, 0.2)
     
-    def checkB(self,col):
+    def checkB(self,col,coverage, allField):
         red = [ 0,   250,   250]
         yd = 0
         bd = 0
-        rd = 0
-        for i in  col:
-            yd= max(yd,dopasowanieKoloru(red, i))
-            # rd= max(rd,checkWhite( i))
-            bd= max(bd,1-checkWhite( i))
-        return yd*.9 +bd*.1#+rd*.4
+        wd = 0
+        yc = 0
+        bc = 0
+        wc = 0
+        for i, f in zip(col,coverage):
     
-    def checkC(self,col):
+            tmp = dopasowanieKoloru(red, i)
+            if(tmp > yd):
+                yd = tmp
+                yc = f
+            tmp = checkWhite( i)                
+            if(tmp > yd):
+                wd = tmp
+                wc = f
+            tmp = checkBlack( i)                
+            if(tmp > yd):
+                bd = tmp
+                bc = f
+        sum = yc +wc 
+        if sum > allField:
+            sum = max(yc,wc) 
+        return (yd*.45 + wd *.45)*howDif(sum/allField,0.8) +bd*.1 * howDif(bc/allField,0.2)
+    
+    def checkC(self,col,coverage, allField):
         blue = [ 109,   230,   210]#101 243 199 on ideal
         yd = 0
-        rd = 0
-        for i in  col:
-            yd= max(yd,dopasowanieKoloru(blue, i))
-            rd= max(rd,checkWhite( i))
-        return yd*.8+rd*.2
-        
-def compareFn(a, b):
-    if a[0]==b[0]:
-        if a[1]==b[1]:
-            if a[2]==b[2]:
-                return 0
-            else:
-                return a[2]-b[2]
-        else:
-            return a[1]-b[1]
-    else:
-        return a[0]-b[0]
-    
-def sortCol(arr):
-    if compareFn(arr[0], arr[1])>0:
-        tmp = arr[0].copy()
-        arr[0] = arr[1]
-        arr[1] = tmp
-    if compareFn(arr[1], arr[2])>0:
-        tmp= arr[1].copy()
-        arr[1]= arr[2]
-        arr[2]= tmp
-    if compareFn(arr[0], arr[1])>0:
-        tmp = arr[0].copy()
-        arr[0]= arr[1]
-        arr[1]= tmp
+        bd = 0
+        wd = 0
+        yc = 0
+        bc = 0
+        wc = 0
+        for i, f in zip(col,coverage): 
+            tmp = dopasowanieKoloru(blue, i)               
+            if(tmp > yd):
+                yd = tmp
+                yc = f
+            tmp = checkWhite(i)
+            if(tmp > yd):
+                wd = tmp
+                wc = f
+            tmp = checkBlack( i)                
+            if(tmp > yd):
+                bd = tmp
+                bc = f
+        sum = bc +wc 
+        if sum > allField:
+            sum = max(bc,wc) 
+        return yd*.8 *howDif(yc/allField, 0.45) +( wd*.1+bd*.1)* howDif(sum/allField, 0.55)
+est = estymarotZnaku()
