@@ -1,8 +1,35 @@
-import os
 import cv2
 from crop_image import findMainColor
 from crop_image import getInsideMask
 import numpy as np
+
+def createSameSizeBackground(imageTensor, color):
+    backgroundImage = createSingleColoredImage(imageTensor.shape[1], imageTensor.shape[0], color)
+    return backgroundImage
+
+def createSingleColoredImage(width, height, color):
+    colorMapKernel = np.array([[color]], np.uint8)
+    colorImage = colorMapKernel.repeat(height, 0).repeat(width, 1)
+    return colorImage
+
+def combineImages(backgroundImage, foregroundImage, foregroundMask):
+    maskedForeground = cv2.bitwise_and(foregroundImage, foregroundImage, mask=foregroundMask)
+
+    backgroundMask = cv2.bitwise_not(foregroundMask)
+
+    maskedBackground = cv2.bitwise_and(backgroundImage, backgroundImage, mask=backgroundMask)
+
+    combinedImages = np.add(maskedBackground, maskedForeground)
+    return combinedImages
+
+def applyColorBackground(image, mask, color):
+    colorBackground = createSameSizeBackground(image, color)
+    imageWithBackground = combineImages(colorBackground, image, mask)
+    return imageWithBackground
+def applyMagentaBackground(image, mask):
+    magentaColor = [255, 0, 255]
+    imageWithMagentaBackground = applyColorBackground(image, mask, magentaColor)
+    return imageWithMagentaBackground
 
 if __name__ == '__main__':
     learningSetDirectory = 'znaki_idealne'
@@ -21,29 +48,7 @@ if __name__ == '__main__':
 
     cv2.imshow("maska", mask)
 
-    maskedSign = cv2.bitwise_and(BGR_image, BGR_image, mask=mask)
-    cv2.imshow("znak z maska", maskedSign)
-
-    normalizedMask = mask / 255
-
-    invertedMask = cv2.bitwise_not(mask)
-
-    invertedMaskTensor = np.repeat(invertedMask[:, :, np.newaxis], 3, axis=2)
-
-    invertedMaskTensorNorm = invertedMaskTensor/255
-
-    magentaMap = np.array([[[255, 0, 255]]], np.uint8)
-    magentaTensor = magentaMap.repeat(invertedMask.shape[0], 0).repeat(invertedMaskTensor.shape[1], 1)
-    magentaTensor.astype(np.uint8)
-
-    print(magentaTensor[:10, :10])
-
-    cv2.imshow("magenta", magentaTensor)
-
-    magentaBackground = cv2.bitwise_and(magentaTensor, magentaTensor, mask=invertedMask)
-    cv2.imshow("magenta background", magentaBackground)
-
-    signWithMagendaBakcground = np.add(magentaBackground, maskedSign)
+    signWithMagendaBakcground = applyMagentaBackground(BGR_image, mask)
     cv2.imshow("sign with background", signWithMagendaBakcground)
 
     cv2.waitKey(0)
