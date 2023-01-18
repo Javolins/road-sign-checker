@@ -68,14 +68,15 @@ def preprocessSigns(datasetDirPath, rawDataDirName, processedDataDirName, subset
         for i in range(4):
             newFilename = signCode + '_' + str(i) + '.' + signFileExtension
             processedSignPath = processedSignsDirPath + '/' + newFilename
-            if i == 0:
-                cv2.imwrite(processedSignPath, signWithMagendaBakcground)
-            elif i == 1:
-                cv2.imwrite(processedSignPath, cv2.rotate(signWithMagendaBakcground, cv2.ROTATE_90_CLOCKWISE))
-            elif i == 2:
-                cv2.imwrite(processedSignPath, cv2.rotate(signWithMagendaBakcground, cv2.ROTATE_180))
-            elif i == 3:
-                cv2.imwrite(processedSignPath, cv2.rotate(signWithMagendaBakcground, cv2.ROTATE_90_COUNTERCLOCKWISE))
+            cv2.imwrite(processedSignPath, signWithMagendaBakcground)
+            # if i == 0:
+            #     cv2.imwrite(processedSignPath, signWithMagendaBakcground)
+            # elif i == 1:
+            #     cv2.imwrite(processedSignPath, cv2.rotate(signWithMagendaBakcground, cv2.ROTATE_90_CLOCKWISE))
+            # elif i == 2:
+            #     cv2.imwrite(processedSignPath, cv2.rotate(signWithMagendaBakcground, cv2.ROTATE_180))
+            # elif i == 3:
+            #     cv2.imwrite(processedSignPath, cv2.rotate(signWithMagendaBakcground, cv2.ROTATE_90_COUNTERCLOCKWISE))
 
 
 def preprocessSignsForNN(subsetDirName):
