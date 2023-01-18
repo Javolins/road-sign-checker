@@ -38,12 +38,15 @@ def applyMagentaBackground(image, mask):
 def preprocessSigns(datasetDirPath, rawDataDirName, processedDataDirName, subsetDirName):
     rawDatasetDir = datasetDirPath + '/' + rawDataDirName
     rawSignsDir = rawDatasetDir + '/' + subsetDirName
-    processedSignsDirPath = rawDatasetDir + '/' + processedDataDirName
+    processedSignsDirPath = datasetDirPath + '/' + processedDataDirName + '/' + subsetDirName
+
+    if not os.path.exists(processedSignsDirPath):
+        os.makedirs(processedSignsDirPath)
+
     rawSignsFilenames = os.listdir(rawSignsDir)
 
     roadSignFilenamePattern = r'([A-Z]-\d+[a-z]?)([\w-]+)?.(\w+)'
     roadSignFilenameRegex = re.compile(roadSignFilenamePattern)
-
 
     for rawSignFilename in rawSignsFilenames:
         regexMatch = roadSignFilenameRegex.match(rawSignFilename)
@@ -66,8 +69,8 @@ def preprocessSigns(datasetDirPath, rawDataDirName, processedDataDirName, subset
 def preprocessSignsForNN(subsetDirName):
     rawDatasetDirPath = 'nn-dataset'
     rawDataDirName = 'raw'
-    processedDataDirName = 'processed'
-    preprocessSigns(rawDatasetDirPath, rawDataDirName processedDataDirName, subsetDirName)
+    processedDataDirName = 'preprocessed'
+    preprocessSigns(rawDatasetDirPath, rawDataDirName, processedDataDirName, subsetDirName)
 
 if __name__ == '__main__':
     preprocessSignsForNN('warn')
