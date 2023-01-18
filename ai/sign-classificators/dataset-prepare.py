@@ -56,14 +56,26 @@ def preprocessSigns(datasetDirPath, rawDataDirName, processedDataDirName, subset
         rawSignPath = rawSignsDir + '/' + rawSignFilename
         BGR_image = cv2.imread(rawSignPath)
 
+        BGR_image = cv2.copyMakeBorder(BGR_image, 5, 5, 0, 0, cv2.BORDER_REPLICATE)
+
         HSV_image = cv2.cvtColor(BGR_image, cv2.COLOR_BGR2HSV)
         HSV_mean = findMainColor(HSV_image)
         mask = getInsideMask(HSV_image, HSV_mean)
         signWithMagendaBakcground = applyMagentaBackground(BGR_image, mask)
 
-        newFilename = signCode + '.' + signFileExtension
-        processedSignPath = processedSignsDirPath + '/' + newFilename
-        cv2.imwrite(processedSignPath, signWithMagendaBakcground)
+
+
+        for i in range(4):
+            newFilename = signCode + '_' + str(i) + '.' + signFileExtension
+            processedSignPath = processedSignsDirPath + '/' + newFilename
+            if i == 0:
+                cv2.imwrite(processedSignPath, signWithMagendaBakcground)
+            elif i == 1:
+                cv2.imwrite(processedSignPath, cv2.rotate(signWithMagendaBakcground, cv2.ROTATE_90_CLOCKWISE))
+            elif i == 2:
+                cv2.imwrite(processedSignPath, cv2.rotate(signWithMagendaBakcground, cv2.ROTATE_180))
+            elif i == 3:
+                cv2.imwrite(processedSignPath, cv2.rotate(signWithMagendaBakcground, cv2.ROTATE_90_COUNTERCLOCKWISE))
 
 
 def preprocessSignsForNN(subsetDirName):
