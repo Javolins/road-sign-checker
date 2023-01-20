@@ -3,6 +3,7 @@ from crop_image import findMainColor
 from crop_image import getInsideMask
 import numpy as np
 
+import sys
 import os
 
 import re
@@ -38,6 +39,11 @@ def applyMagentaBackground(image, mask):
 def preprocessSigns(datasetDirPath, rawDataDirName, processedDataDirName, subsetDirName):
     rawDatasetDir = datasetDirPath + '/' + rawDataDirName
     rawSignsDir = rawDatasetDir + '/' + subsetDirName
+
+    if not os.path.isdir(rawSignsDir):
+        print("no such raw dataset directory")
+        exit(2)
+
     processedSignsDirPath = datasetDirPath + '/' + processedDataDirName + '/' + subsetDirName
 
     if not os.path.exists(processedSignsDirPath):
@@ -64,8 +70,8 @@ def preprocessSigns(datasetDirPath, rawDataDirName, processedDataDirName, subset
         signWithMagendaBakcground = applyMagentaBackground(BGR_image, mask)
 
 
-
-        for i in range(4):
+        noCopies = 4
+        for i in range(noCopies):
             newFilename = signCode + '_' + str(i) + '.' + signFileExtension
             processedSignPath = processedSignsDirPath + '/' + newFilename
             cv2.imwrite(processedSignPath, signWithMagendaBakcground)
@@ -80,31 +86,16 @@ def preprocessSigns(datasetDirPath, rawDataDirName, processedDataDirName, subset
 
 
 def preprocessSignsForNN(subsetDirName):
-    rawDatasetDirPath = 'nn-dataset'
+    datasetsDirPath = 'nn/datasets'
     rawDataDirName = 'raw'
     processedDataDirName = 'preprocessed'
-    preprocessSigns(rawDatasetDirPath, rawDataDirName, processedDataDirName, subsetDirName)
+    preprocessSigns(datasetsDirPath, rawDataDirName, processedDataDirName, subsetDirName)
 
 if __name__ == '__main__':
-    preprocessSignsForNN('warn')
+    if len(sys.argv) < 2:
+        print("provide sign subset name")
+        exit(1)
 
-    # learningSetDirectory = 'znaki_idealne'
-    # filename = 'A-1.png'
-    # path = learningSetDirectory + '/' + filename
-    # BGR_image = cv2.imread(path)
-    #
-    # border = 100
-    # BGR_image = cv2.copyMakeBorder(BGR_image, border, border, border, border, cv2.BORDER_CONSTANT, value=0)
-    #
-    # cv2.imshow("załadowany", BGR_image)
-    #
-    # HSV_image = cv2.cvtColor(BGR_image, cv2.COLOR_BGR2HSV)
-    # HSV_mean = findMainColor(HSV_image)
-    # mask = getInsideMask(HSV_image, HSV_mean)
-    #
-    # cv2.imshow("maska", mask)
-    #
-    # signWithMagendaBakcground = applyMagentaBackground(BGR_image, mask)
-    # cv2.imshow("sign with background", signWithMagendaBakcground)
-    #
-    # cv2.waitKey(0)
+    signSubsetName = sys.argv[1]
+
+    preprocessSignsForNN(signSubsetName)
