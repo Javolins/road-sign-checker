@@ -29,7 +29,8 @@ def learnNNForSpecificSignType(typeName):
     rgxp = re.compile(labels_pattern)
     rgxp.match(znakiFiles[0].name)
 
-    dls = ImageDataLoaders.from_name_re(learnerOutputDirPath, znakiFiles, labels_pattern, bs=4, batch_tfms=aug_transforms(do_flip=False))
+    dls = ImageDataLoaders.from_name_re(learnerOutputDirPath, znakiFiles, labels_pattern, bs=4, item_tfms=Resize(90),
+                                        batch_tfms=aug_transforms(do_flip=False))
 
     learn = vision_learner(dls, resnet18, metrics=error_rate)
     learn.lr_find()
