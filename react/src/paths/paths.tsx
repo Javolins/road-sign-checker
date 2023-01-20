@@ -1,4 +1,5 @@
 import { DoNotDisturbAlt, People } from '@mui/icons-material';
+import React from 'react';
 import HomeP from './pages/HomeP';
 import RozpoznawaneZnaki from './pages/RozpoznawaneZnaki';
 import Tworcy from './pages/Tworcy';

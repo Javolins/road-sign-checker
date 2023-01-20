@@ -1,6 +1,5 @@
 import { Typography } from "@mui/material";
-import mail from "./Mail.svg"
-import star from "./Star.svg"
+import React from "react";
 
 const RightSide = () => (
     <>

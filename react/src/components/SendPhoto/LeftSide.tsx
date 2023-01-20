@@ -1,4 +1,4 @@
-import icon from "./Vector.svg"
+import React from 'react';
 import './style.css'
 
 const LeftSide = () => (
