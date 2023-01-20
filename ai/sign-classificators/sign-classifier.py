@@ -33,6 +33,51 @@ class SignsNeuralNetworkPathBuilers:
         preprossedDatasetPath = os.path.join(self.nnDirPath, self.datasetsDirName, signType, self.preprocessedDatasetDirName)
         return preprossedDatasetPath
 
+class ClassificationResult:
+    def __init__(self, predictionsDescending):
+        self.predictionsDescending = predictionsDescending
+
+    def getClassifiedType(self):
+        firstKey = list( self.predictionsDescending.keys())[0]
+        return firstKey
+
+    def getClassificationValue(self):
+        firstValue = list(self.predictionsDescending)[0]
+        return firstValue
+    def getPredictions(self):
+        return self.predictionsDescending
+class SignClassifier:
+
+    def createPredictionDict(self, predictionResult):
+        predictionDict = {}
+        vocabLength = len(self.model.dls.vocab)
+        for dictElementIndex in range(vocabLength):
+            dictElement = learner.dls.vocab[dictElementIndex]
+            elementPredictionValue = predictionResult[2][dictElementIndex]
+            predictionDict[dictElement] = float(elementPredictionValue)
+
+        return predictionDict
+
+    def sortPredictionDict(self, predictionDict):
+        sortedPredictions = dict(sorted(predictionDict.items(), key=lambda item: item[1], reverse=True))
+        return sortedPredictions
+
+    def createSortedPredictionDict(self, predictionResult):
+        predictionDict = self.createPredictionDict(predictionResult)
+        sortedPredictions = self.sortPredictionDict(predictionDict)
+        return sortedPredictions
+
+    def __init__(self, signType):
+        pathBuilder = SignsNeuralNetworkPathBuilers()
+        modelPath = pathBuilder.getModelPath(signType)
+        self.model = load_learner(modelPath)
+    def classifySign(self, preprocessedSignPath):
+        predictionResult = self.model.predict(preprocessedSignPath)
+        sortedPredictions = self.createSortedPredictionDict(predictionResult)
+        classificationResult = ClassificationResult(sortedPredictions)
+        return classificationResult
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("provide sign type")
