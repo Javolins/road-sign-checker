@@ -1,11 +1,10 @@
-import { Alert, Collapse, DialogTitle, IconButton } from '@mui/material';
+import { Alert } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import React from 'react';
 import { useState } from 'react';
-import { ImageType } from 'react-images-uploading';
-import HomeP, { imgS } from '../../paths/pages/HomeP';
+import { imgS } from '../../paths/pages/HomeP';
 
 import SendAlert from './SendAlert';
 import LeftSide from './LeftSide';
@@ -30,9 +29,8 @@ const style = {
   padding: '0',
 };
 
-let uid: any;
 
-function sendImgToBackend() {
+function sendImgToBackend(openModal: any) {
   const formData = new FormData();
   console.log("send");
   formData.append('userImg', imgS[0].file);
@@ -42,17 +40,43 @@ function sendImgToBackend() {
     body: formData,
   }).then((response) => {
     response.json().then((body) => {
-      // console.log("get fedback")
-      // console.log(body);
-      uid = body.uid;
-      // console.log(uid);
+      let uid = body.uid;
+      console.log(uid);
+      getImgInfoFromBackedn(openModal, uid);
+
     });
   });
 }
-function getImgInfoFromBackedn(openModal: any) {
-  fetch('https://roadsigns.p4m1.top/api/info', {}).then((response) => {
-    openModal(true);
-  })
+
+const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
+export let additionalInformationAboutImgProcesing:any;
+
+async function getImgInfoFromBackedn(openModal: any, uid: any) {
+  const sendToRCla =
+  {
+    uid
+  }
+  await delay(1000);
+  sendToRCla.uid = uid;
+  let jsonString = JSON.stringify(sendToRCla);
+  console.log(jsonString);
+  const body = JSON.stringify(uid);
+  console.log(body);
+  fetch('https://roadsigns.p4m1.top/api/info', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: jsonString,
+  }).then((response) => {
+    response.json().then((body) => {
+      // console.log("get fedback")
+      console.log(body);
+      additionalInformationAboutImgProcesing = body;
+      // uid = body.uid;
+      // console.log(uid);
+      openModal(true);
+    });
+  });
 }
 
 
@@ -65,28 +89,21 @@ function SendPhoto() {
   const handleOpen = () => {
     <Alert severity="info">No photo selected pleas select photo</Alert>
 
-    if (imgS == null || imgS.length == 0) {
+    if (imgS === null || imgS.length === 0) {
       isNoPhotoSelected = true
       console.log("no photo")
       console.log(isNoPhotoSelected)
       setAlert(true);
     }
-    else if (imgS.length == 1) {
-      sendImgToBackend();
+    else if (imgS.length === 1) {
+      sendImgToBackend(setOpen);
       setAlert(false);
-      getImgInfoFromBackedn(setOpen)
-        ;
     }
-    // console.log(imgS[0].file);}
-
   }
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      {/* {imgS.map((image:ImageType) => (
-          <img src={image.dataURL} alt="" />
-          ))} */}
       <Button sx={{
         position: "absolute",
         bottom: "30px",
@@ -101,7 +118,6 @@ function SendPhoto() {
         <Box sx={style}>
           <LeftSide />
           <RightSide />
-
         </Box>
       </Modal>
       {SendAlert(openAlert, setAlert)}
