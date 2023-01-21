@@ -2,6 +2,8 @@ import sys
 import os
 
 from nnpaths import SignsNeuralNetworkPathBuilers
+from dataset_prepare import applyMagentaBackground
+from dataset_prepare import thresholdWithMagentaBackground
 
 from fastai.vision.all import *
 
@@ -48,6 +50,15 @@ class SignClassifier:
         classificationResult = ClassificationResult(sortedPredictions)
         return classificationResult
 
+    def preprocessAndClassify(self, BGR_image, mask):
+        preprocessedSign = applyMagentaBackground(BGR_image, mask)
+        classificationResult = self.classifySign(preprocessedSign)
+        return classificationResult
+
+    def binarizeAndClassify(self, BGR_image):
+        preprocessedSign = thresholdWithMagentaBackground(BGR_image)
+        classificationResult = self.classifySign(preprocessedSign)
+        return classificationResult
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
@@ -73,7 +84,7 @@ if __name__ == '__main__':
         exit(4)
 
     classifier = SignClassifier(modelPath)
-    classifyResult = classifier.classifySign(inputImagePath)
+    classifyResult = classifier.binarizeAndClassify(inputImagePath)
     print("result")
     print(classifyResult.getClassifiedType())
     print("vector")

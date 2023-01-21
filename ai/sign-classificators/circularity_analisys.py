@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
         numberOfVertices = getNumberOfVertices(mainContour, imageSize)
 
-        shape = getShape(mainContour, imageSize)
+        shape = getShape(mainContour)
 
         znakiElement = {
             "fileName": fileName,
