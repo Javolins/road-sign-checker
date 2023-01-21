@@ -1,1 +1,3 @@
 import crop_image
+import image_analisys_functions
+import classifier_color

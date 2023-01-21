@@ -1,5 +1,5 @@
 from sklearn.cluster import KMeans
-import cv2
+import DominantColors
 import numpy as np
 
 #color , color2 - colory porównywane między sobą in HSV
@@ -110,3 +110,9 @@ class estymarotZnaku:
             sum = max(bc,wc) 
         return yd*.8 *howDif(yc/allField, 0.45) +( wd*.1+bd*.1)* howDif(sum/allField, 0.55)
 est = estymarotZnaku()
+
+def finalColorClasifaier(imgRGB, mask):
+    DominantColors.dmc.imgPreper_save(imgRGB, mask)
+    # color is returned as img 
+    color = DominantColors.dmc.n_dominant_colors_conv_to_hsv()
+    return est.est(color[0],DominantColors.dmc.get_size_of_color_covered_area())
