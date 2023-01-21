@@ -52,20 +52,32 @@ def getZnakCircularity(znakImage):
     return circularity
 
 def getNumberOfVertices(mainContour, imageSize):
-    imageDiagonalLength = np.sqrt(imageSize[0] ** 2 + imageSize[1] ** 2)
+    imageDiagonalLength = np.sqrt(imageSize.width ** 2 + imageSize.height ** 2)
     EPSILON_PERCENTAGE = 0.07
     polygonApproximationEpsilon = EPSILON_PERCENTAGE * imageDiagonalLength
     contoursSharpened = cv2.approxPolyDP(mainContour, polygonApproximationEpsilon, True)
     numberOfVertices = len(contoursSharpened)
     return numberOfVertices
-def getShape(contour, imageSize):
-    #znakMask - binarized image of znak where white pixels represent it
+
+class ImageSize:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def createFromOpenCVImage(openCVImage):
+        # shape stores number of rows(height) first
+        size = ImageSize(openCVImage.shape[1], openCVImage.shape[0])
+        return size
+
+def getShape(contour):
+    #contour - binarized image of znak where white pixels represent its area
     circularity = getCircularity(contour)
 
     CIRCLE_THRESHOLD = 0.95
     isNotCircle = circularity < CIRCLE_THRESHOLD
 
     if isNotCircle:
+        imageSize = ImageSize.createFromOpenCVImage(contour)
         numberOfVertices = getNumberOfVertices(contour, imageSize)
         if numberOfVertices == 3:
             return ZnakShape.TRIANGLE

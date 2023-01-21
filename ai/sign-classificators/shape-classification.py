@@ -66,10 +66,11 @@ if __name__ == '__main__':
     circularity = getCircularity(mainContour)
     print(circularity)
 
-    noVertices = getNumberOfVertices(mainContour,  znakShape2.shape[:2])
+    znakSize = ImageSize.createFromOpenCVImage(znakShape2)
+    noVertices = getNumberOfVertices(mainContour, znakSize)
     print(noVertices)
 
-    shape = getShape(mainContour, znakShape2.shape[:2])
+    shape = getShape(mainContour)
     print(shape)
 
     cv2.waitKey(0)

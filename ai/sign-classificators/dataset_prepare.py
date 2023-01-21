@@ -1,6 +1,7 @@
 import cv2
 from crop_image import findMainColor
 from crop_image import getInsideMask
+from crop_image import getFinalMask
 import numpy as np
 
 import sys
@@ -41,7 +42,8 @@ def applyMagentaBackground(image, mask):
 def thresholdWithMagentaBackground(BGR_image):
     HSV_image = cv2.cvtColor(BGR_image, cv2.COLOR_BGR2HSV)
     HSV_mean = findMainColor(HSV_image)
-    mask = getInsideMask(HSV_image, HSV_mean)
+    inside_mask = getInsideMask(HSV_image, HSV_mean)
+    mask = getFinalMask(HSV_image, inside_mask)
     signWithMagendaBakcground = applyMagentaBackground(BGR_image, mask)
     return signWithMagendaBakcground
 
