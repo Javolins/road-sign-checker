@@ -118,6 +118,7 @@ def isWhite(HSV_value):
 
 def getHSVimageValuesFromMask(HSV_image, BIN_mask):
     HSV_list = []
+    print(np.shape(HSV_image))
     for i in range(np.shape(HSV_image)[0]):
         for j in range(np.shape(HSV_image)[1]):
             if BIN_mask[i][j]:
@@ -208,8 +209,7 @@ def getFinalMaskFromImage(filename):
     HSV_image = readImageAsHSV(filename)
     HSV_mean = findMainColor(HSV_image)
     inside_mask = getInsideMask(HSV_image, HSV_mean)
-    final_mask = getFinalMask(HSV_mean, inside_mask)
-    return final_mask
+    return getFinalMask(HSV_image, inside_mask)
 
 
 def getSignWithoutBordersFromImage(filename):

@@ -6,6 +6,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from threading import Thread
 from time import sleep
+import cv2
 
 from matplotlib import pyplot as plt
 
@@ -21,8 +22,8 @@ def pipeline(uid):
     filepath_img = "/".join([app.config['UPLOAD_FOLDER'], uid + '.jpg'])
     filepath_mask = "/".join([app.config['UPLOAD_FOLDER'], uid + '_mask.jpg'])
     mask = ci.getFinalMaskFromImage(filepath_img)
-    plt.imshow(mask)
-    plt.savefig(filepath_mask)
+    cv2.imwrite(filepath_mask, mask)
+    #TODO
 
 @app.route('/')
 @app.route('/home')
@@ -47,7 +48,7 @@ def upload():
     destination="/".join([app.config['UPLOAD_FOLDER'], filename])
     file.save(destination)
     
-    thread = Thread(target=pipeline, args=(uid))
+    thread = Thread(target=pipeline, kwargs={"uid":uid})
     thread.start()
     
     return jsonify({"info":"File successfully saved","uid":uid})
@@ -66,8 +67,7 @@ def info():
     if not os.path.isfile(filepath):
         return jsonify({"info":"Info about uid='" + uid + "' not found"})
     
-    
-        
+    #TODO
 
     return jsonify({"uid":uid})
 
