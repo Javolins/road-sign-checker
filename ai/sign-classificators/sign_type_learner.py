@@ -10,20 +10,17 @@ from matplotlib import pyplot
 
 from fastai.vision.all import *
 
-def learnNNForSpecificSignType(typeName):
-    neuralNetworkDirPath = 'nn'
-    prepreocessedDatasetsDirPath = neuralNetworkDirPath + '/datasets/preprocessed'
-    signsDataSetDir = prepreocessedDatasetsDirPath + '/' + typeName
+from nnpaths import SignsNeuralNetworkPathBuilers
 
-    if not os.path.exists(neuralNetworkDirPath):
-        os.makedirs(neuralNetworkDirPath)
-
-    learnerOutputDirPath = neuralNetworkDirPath + '/learner/' + typeName
+def learnNNForSpecificSignType(datasetDirPath, modelName, epochs):
+    #@return path to trained model
+    pathBuilder = SignsNeuralNetworkPathBuilers()
+    learnerOutputDirPath = pathBuilder.getLearnerDirPath(modelName)
 
     if not os.path.exists(learnerOutputDirPath):
         os.makedirs(learnerOutputDirPath)
 
-    znakiFiles = get_image_files(signsDataSetDir)
+    znakiFiles = get_image_files(datasetDirPath)
 
     labels_pattern = r'([A-Z]-\d+[a-z]?)_(\d+).\w+'
     rgxp = re.compile(labels_pattern)
@@ -38,9 +35,10 @@ def learnNNForSpecificSignType(typeName):
     epochs = 20
     learn.fine_tune(epochs)
 
-    modelFilename = typeName + '.pkl'
-    modelPath = os.path.abspath(neuralNetworkDirPath + '/' + modelFilename)
+    modelPath = pathBuilder.getModelPath(modelName)
     learn.export(modelPath)
+
+    return modelPath
 
 
 if __name__ == '__main__':
@@ -50,4 +48,17 @@ if __name__ == '__main__':
 
     signSubsetName = sys.argv[1]
 
-    learnNNForSpecificSignType(signSubsetName)
+    if len(sys.argv) < 3:
+        print("provide number of epochs")
+        exit(2)
+
+    try:
+        epochs = int(sys.argv[2])
+    except ValueError:
+        print("epochs is not a valid integer")
+        exit(3)
+
+    pathBuilder = SignsNeuralNetworkPathBuilers()
+    preprocessedDatasetDirPath = pathBuilder.getPreprocessedDatasetDirPath(signSubsetName)
+
+    learnNNForSpecificSignType(preprocessedDatasetDirPath, signSubsetName, epochs)
