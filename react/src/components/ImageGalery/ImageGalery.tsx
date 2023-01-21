@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import { itemData } from './ImgInfo';
 import Button from '@mui/material/Button';
-import { Dialog, DialogContent, DialogActions} from '@mui/material';
+import { Dialog, DialogContent, DialogActions, DialogContentText } from '@mui/material';
 
 const ImageGalery = () => {
     const [openDialog, setOpen] = React.useState(false);
@@ -18,7 +18,7 @@ const ImageGalery = () => {
     const openDialogF = () => {
         setOpen(true);
     };
-    return (
+    return (<>
         <ImageList sx={{ margin: '0 auto' }} cols={4}>
             <ImageListItem key="Subheader" >
                 <ListSubheader component="div">Rozpoznawane znaki:</ListSubheader>
@@ -41,21 +41,27 @@ const ImageGalery = () => {
                                 onClick={openDialogF}
                             >
                                 <InfoIcon />
-                                <Dialog
-                                    open={openDialog}
-                                    onClose={closeDialogF}
-                                >
-                                    <DialogContent>{item.info}</DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={closeDialogF} autoFocus></Button>
-                                    </DialogActions>
-                                </Dialog>
+                               
                             </IconButton>
                         }
                     />
                 </ImageListItem>
             ))}
-        </ImageList>
+        </ImageList> 
+        <Dialog
+                                    open={openDialog}
+                                    onClose={closeDialogF}
+                                    aria-describedby="alert-dialog-description"
+                                >
+                                    <DialogContent  >
+                                        <DialogContentText id="alert-dialog-description">{item.info}
+                                        </DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={closeDialogF} autoFocus> exit</Button>
+                                    </DialogActions>
+                                </Dialog>
+                                </>
     );
 
 }
