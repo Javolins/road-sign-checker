@@ -7,15 +7,17 @@ import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import { itemData } from './ImgInfo';
 import Button from '@mui/material/Button';
-import { Dialog, DialogContent, DialogActions, DialogContentText } from '@mui/material';
+import { Dialog, DialogContent, DialogActions, DialogContentText, DialogTitle } from '@mui/material';
 
 const ImageGalery = () => {
     const [openDialog, setOpen] = React.useState(false);
     const closeDialogF = () => {
+        // console.log("plessss let me out")
         setOpen(false);
     };
 
     const openDialogF = () => {
+        // console.log("ples open");
         setOpen(true);
     };
     return (<>
@@ -24,7 +26,7 @@ const ImageGalery = () => {
                 <ListSubheader component="div">Rozpoznawane znaki:</ListSubheader>
             </ImageListItem>
             {itemData.map((item) => (
-                <ImageListItem key={item.img}>
+                <><ImageListItem key={item.img}>
                     <img
                         src={`${item.img}?w=248&fit=crop&auto=format`}
                         srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=4 2x`}
@@ -41,27 +43,31 @@ const ImageGalery = () => {
                                 onClick={openDialogF}
                             >
                                 <InfoIcon />
-                               
                             </IconButton>
                         }
                     />
-                </ImageListItem>
+                </ImageListItem>  
+                <Dialog
+                    open={openDialog}
+                    onClose={closeDialogF}
+                    aria-describedby="alert-dialog-description"
+                >
+                        <DialogTitle>{"Znak: "+item.title}</DialogTitle>
+                        <DialogContent  >
+                            <DialogContentText id="alert-dialog-description">{item.info}
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={closeDialogF}> exit</Button>
+                        </DialogActions>
+                    </Dialog>
+                </>
+
+
             ))}
-        </ImageList> 
-        <Dialog
-                                    open={openDialog}
-                                    onClose={closeDialogF}
-                                    aria-describedby="alert-dialog-description"
-                                >
-                                    <DialogContent  >
-                                        <DialogContentText id="alert-dialog-description">{item.info}
-                                        </DialogContentText>
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={closeDialogF} autoFocus> exit</Button>
-                                    </DialogActions>
-                                </Dialog>
-                                </>
+        </ImageList>
+
+    </>
     );
 
 }
