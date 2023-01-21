@@ -65,12 +65,12 @@ class DominantColors:
             self.delIndex +=1
         # print(self.COLORS)
         
-        return self.COLORS
+        return np.uint8([self.COLORS])
     # return array of colors in hsv
 
     def n_dominant_colors_conv_to_hsv(self, imRGB=None):
         # type: ignore
-        return cv2.cvtColor(np.uint8([self.n_dominant_colors(imRGB)]), cv2.COLOR_RGB2HSV)
+        return cv2.cvtColor(self.n_dominant_colors(imRGB), cv2.COLOR_RGB2HSV)
 
     # return array of color covered arrea
     # be carefull if you change color order
