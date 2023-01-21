@@ -7,6 +7,8 @@ from flask_limiter.util import get_remote_address
 from threading import Thread
 from time import sleep
 
+from matplotlib import pyplot as plt
+
 import sys
 sys.path.insert(1, '/home/michal/repo/road-sign-checker/ai/sign-classificators/img_scripts')
 from img_scripts import crop_image as ci
@@ -16,8 +18,11 @@ limiter = Limiter(get_remote_address,app=app,storage_uri="memory://")
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 def pipeline(uid):
-    sleep(10)
-    print('This is from another thread')
+    filepath_img = "/".join([app.config['UPLOAD_FOLDER'], uid + '.jpg'])
+    filepath_mask = "/".join([app.config['UPLOAD_FOLDER'], uid + '_mask.jpg'])
+    mask = ci.getFinalMaskFromImage(filepath_img)
+    plt.imshow(mask)
+    plt.savefig(filepath_mask)
 
 @app.route('/')
 @app.route('/home')
