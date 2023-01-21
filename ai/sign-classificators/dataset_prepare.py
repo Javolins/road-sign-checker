@@ -47,7 +47,7 @@ def thresholdWithMagentaBackground(BGR_image):
     signWithMagendaBakcground = applyMagentaBackground(BGR_image, mask)
     return signWithMagendaBakcground
 
-def preprocessSignImage(preprocessedDatasetDirPath, rawSignPath, signCode, signFileExtension, noCopies):
+def preprocessSignImage(preprocessedDatasetDirPath, rawSignPath, signCode, signFileExtension, sampleTypeIndex):
     BGR_image = cv2.imread(rawSignPath)
 
     #add top and bottom border to adjust to 90x90 pixels(BIASED FOR WARNING SIGNS)
@@ -55,14 +55,13 @@ def preprocessSignImage(preprocessedDatasetDirPath, rawSignPath, signCode, signF
 
     signWithMagendaBakcground = thresholdWithMagentaBackground(BGR_image)
 
-    for i in range(noCopies):
-        newFilename = signCode + '_' + str(i) + '.' + signFileExtension
-        processedSignPath = preprocessedDatasetDirPath + '/' + newFilename
-        cv2.imwrite(processedSignPath, signWithMagendaBakcground)
+    newFilename = signCode + '_' + str(sampleTypeIndex) + '.' + signFileExtension
+    processedSignPath = preprocessedDatasetDirPath + '/' + newFilename
+    cv2.imwrite(processedSignPath, signWithMagendaBakcground)
 class RawDatasetDirDoesNotExistError(Exception):
     pass
 
-def preprocessSigns(rawDatasetDirPath, preprocessedDatasetDirPath, noCopies):
+def preprocessSigns(rawDatasetDirPath, preprocessedDatasetDirPath):
     #may raise RawDatasetDirDoesNotExistError exception
     if not os.path.exists(preprocessedDatasetDirPath):
         os.makedirs(preprocessedDatasetDirPath)
@@ -84,7 +83,7 @@ def preprocessSigns(rawDatasetDirPath, preprocessedDatasetDirPath, noCopies):
             signFileExtension = regexMatch[3]
 
             rawSignPath = rawDatasetDirPath + '/' + rawSignFilename
-            preprocessSignImage(preprocessedDatasetDirPath, rawSignPath, signCode, signFileExtension, noCopies)
+            preprocessSignImage(preprocessedDatasetDirPath, rawSignPath, signCode, signFileExtension, 0)
 
             preprocessedSignFilenames.append(rawSignFilename)
 
@@ -94,11 +93,11 @@ class PreprocessSignsResult:
     def __init__(self, outputDirPath, preprocessedSignFilenames):
         self.outputDirPath = outputDirPath
         self.preprocessedSignFilenames = preprocessedSignFilenames
-def preprocessSignsForNN(subsetDirName, noCopies):
+def preprocessSignsForNN(subsetDirName):
     pathBuildr = SignsNeuralNetworkPathBuilers()
     rawDatasetDirPath = pathBuildr.getRawDatasetDirPath(subsetDirName)
     preprocessedDatasetDirPath = pathBuildr.getPreprocessedDatasetDirPath(subsetDirName)
-    preprocessedSignFilenames = preprocessSigns(rawDatasetDirPath, preprocessedDatasetDirPath, noCopies)
+    preprocessedSignFilenames = preprocessSigns(rawDatasetDirPath, preprocessedDatasetDirPath)
     result = PreprocessSignsResult(preprocessedDatasetDirPath, preprocessedSignFilenames)
     return result
 
