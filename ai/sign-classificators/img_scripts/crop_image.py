@@ -201,6 +201,17 @@ def getFinalMask(HSV_image, inside_mask):
     return mask
 
 
+def getFinalMaskFromImage(filename):
+    """
+    Funkcja zwracająca maskę znaku z obrazu
+    """
+    HSV_image = readImageAsHSV(filename)
+    HSV_mean = findMainColor(HSV_image)
+    inside_mask = getInsideMask(HSV_image, HSV_mean)
+    final_mask = getFinalMask(HSV_mean, inside_mask)
+    return final_mask
+
+
 def getSignWithoutBordersFromImage(filename):
     """
     Funkcja zwracająca środek znaku bez obramówki z obrazu
