@@ -24,7 +24,7 @@ class SignClassifier:
         predictionDict = {}
         vocabLength = len(self.model.dls.vocab)
         for dictElementIndex in range(vocabLength):
-            dictElement = learner.dls.vocab[dictElementIndex]
+            dictElement = self.model.dls.vocab[dictElementIndex]
             elementPredictionValue = predictionResult[2][dictElementIndex]
             predictionDict[dictElement] = float(elementPredictionValue)
 

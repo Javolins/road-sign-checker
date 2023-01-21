@@ -32,7 +32,6 @@ def learnNNForSpecificSignType(datasetDirPath, modelName, epochs):
     learn = vision_learner(dls, resnet18, metrics=error_rate)
     learn.lr_find()
 
-    epochs = 20
     learn.fine_tune(epochs)
 
     modelPath = pathBuilder.getModelPath(modelName)
