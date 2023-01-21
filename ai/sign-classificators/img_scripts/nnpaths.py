@@ -5,10 +5,12 @@ class SignType(Enum):
     PROHIBITION = 'proh'
     WARRANT = 'warrant'
     INFORMATIONAL = 'info'
+    WARRANT_INFORMATIONAL = 'warnt-info'
 
 class SignsNeuralNetworkPathBuilers:
-    def __init__(self):
-        self.nnDirPath = os.path.abspath('nn')
+    def __init__(self, path):
+        self.nnDirPath = os.path.join(path, 'nn')
+        print(type(self.nnDirPath))
         self.datasetsDirName = 'datasets'
         self.rawDatasetDirName = 'raw'
         self.preprocessedDatasetDirName = 'preproc'

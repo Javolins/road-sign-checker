@@ -8,6 +8,7 @@ from threading import Thread
 from time import sleep
 import cv2
 import json
+import pathlib
 
 from matplotlib import pyplot as plt
 
@@ -16,6 +17,8 @@ sys.path.insert(1, '/home/michal/repo/road-sign-checker/ai/sign-classificators/i
 from img_scripts import crop_image as ci
 from img_scripts import image_analisys_functions as iaf
 from img_scripts import classifier_color as cc
+from img_scripts import sign_classifier as sc
+from img_scripts import nnpaths as nn
 
 limiter = Limiter(get_remote_address,app=app,storage_uri="memory://")
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -35,6 +38,27 @@ def pipeline(uid):
             json.dump(info, outfile)
         return
     info['finalColorClasifaier'] = cc.finalColorClasifaier(ci.readImageAsRGB(filepath_img), mask)
+    
+    max_value = max(info['finalColorClasifaier'])
+    max_index = info['finalColorClasifaier'].index(max_value)
+    sign_type = 0
+
+    if max_index == 0:
+        sign_type = nn.SignType.WARNING.value
+    if max_index == 1:
+        sign_type = nn.SignType.PROHIBITION.value
+    if max_index == 2:
+        sign_type = nn.SignType.WARRANT_INFORMATIONAL.value
+        
+    path_builder = nn.SignsNeuralNetworkPathBuilers('/home/michal/repo/road-sign-checker/ai/sign-classificators')
+    model_path = path_builder.getModelPath(sign_type)
+    # print(type(model_path))
+    # print(model_path)
+    # print(type(os.path.abspath(model_path)))
+    classifier = sc.SignClassifier(pathlib.Path(model_path).as_posix())
+    result = classifier.preprocessAndClassify(cv2.imread(filepath_img),mask)
+    
+    info['classifiedType'] = result.getClassifiedType()
     
     with open(filepath_json, "w") as outfile:
         json.dump(info, outfile)
@@ -60,7 +84,6 @@ def upload():
     uid = str(uuid.uuid4())
         
     file = request.files['userImg']
-    print("DUUUPPAA")
     print(file)
     filename = secure_filename(uid+'.jpg')
     destination="/".join([app.config['UPLOAD_FOLDER'], filename])
