@@ -41,8 +41,9 @@ class SignClassifier:
 
     def __init__(self, modelPath):
         self.model = load_learner(modelPath)
-    def classifySign(self, preprocessedSignPath):
-        predictionResult = self.model.predict(preprocessedSignPath)
+    def classifySign(self, preprocessedSign):
+        #@preprocessedSign path to image or PILImage object
+        predictionResult = self.model.predict(preprocessedSign)
         sortedPredictions = self.createSortedPredictionDict(predictionResult)
         classificationResult = ClassificationResult(sortedPredictions)
         return classificationResult
