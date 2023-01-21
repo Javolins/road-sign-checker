@@ -1,8 +1,7 @@
 import { Typography } from "@mui/material";
 import React from "react";
 import { itemData } from '../ImageGalery';
-import { index } from './SendPhoto';
-
+import { additionalInformationAboutImgProcesing, index } from './SendPhoto';
 const RightSide = () => (
     <>
         <div id="rightSide">
@@ -26,27 +25,61 @@ const RightSide = () => (
                     color: 'rgba(0, 0, 0, 0.87)',
                     marginLeft: 45,
                     marginBottom: 20.5,
-                }}/> 
+                }} />
 
-               
+
                 <Typography variant="h3" >
                     Znak:
                 </Typography>
-                
-                   
-               
 
-                <Typography variant="body1"  sx={{
+
+
+
+                <Typography variant="body1" sx={{
                     marginLeft: "40px",
                     marginRight: "40px",
-                    }}>
-                {itemData[index].info}
+                }}>
+                    {itemData[index].info}
+
+
                 </Typography>
 
 
-
-
             </section>
+
+            <Typography sx={{
+                marginTop: "20px",
+                marginLeft: "40px",
+                marginRight: "40px",
+                variant:"caption",
+                fontSize: '.7rem',
+            }}>
+                A: {additionalInformationAboutImgProcesing.finalColorClasifaier[0]}
+            </Typography>
+            <Typography sx={{
+                marginLeft: "40px",
+                marginRight: "40px",
+                variant:"caption",
+                fontSize: '.7rem',
+            }}>
+            B: {additionalInformationAboutImgProcesing.finalColorClasifaier[1]}
+            </Typography>
+            <Typography sx={{
+                marginLeft: "40px",
+                marginRight: "40px",
+                variant:"caption",
+                fontSize: '.7rem',
+            }}>
+            C: {additionalInformationAboutImgProcesing.finalColorClasifaier[2]}
+            </Typography>
+            <Typography sx={{
+                marginLeft: "40px",
+                marginRight: "40px",
+                variant:"caption",
+                fontSize: '.7rem',
+            }}>
+            {additionalInformationAboutImgProcesing.maskShape}
+            </Typography>
         </div>
     </>
 )

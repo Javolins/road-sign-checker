@@ -19,6 +19,7 @@ const LeftSide = () => (
                 width: 226,
                 borderTopLeftRadius: 'inherit',
             }}
+            alt = {itemData[index].title}
             src={itemData[index].img}/>
         <div
             style={{ 
