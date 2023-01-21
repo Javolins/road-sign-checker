@@ -11,8 +11,8 @@ def plotOpenCV(BGRImage):
 def plotGrid(dirPath):
     preprocessedSampleNames = os.listdir(dirPath)
     numberOfOutputSamples = len(preprocessedSampleNames)
-    rows = 4
-    columns = math.ceil(numberOfOutputSamples / 4)
+    columns = 4
+    rows = math.ceil(numberOfOutputSamples / 4)
     plt.figure()
     for i in range(numberOfOutputSamples):
         subplotIndex = i + 1
