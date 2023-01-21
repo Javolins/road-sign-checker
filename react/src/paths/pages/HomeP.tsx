@@ -1,5 +1,5 @@
 import Box from "@mui/system/Box";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import { Button } from "@mui/material";
 

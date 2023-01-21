@@ -1,6 +1,6 @@
 import Box from "@mui/system/Box";
-import Typography from '@mui/material/Typography';
 import React from "react";
+import ImageGalery from "../../components/ImageGalery";
 
 const RozpoznawaneZnaki = () => {
   return (
@@ -9,7 +9,9 @@ const RozpoznawaneZnaki = () => {
         backgroundColor: "#E7DCD5",
         flexGrow: 1
       }}>
+        <ImageGalery></ImageGalery>
       </Box>
+
     </>
   )
 }
