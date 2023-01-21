@@ -10,6 +10,7 @@ const LeftSide = () => (
               width: 226, 
               height: 607,
         }}>
+            
         <img
             style={{ 
                 width: 226,

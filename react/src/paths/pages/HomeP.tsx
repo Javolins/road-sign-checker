@@ -3,7 +3,10 @@ import React, { useState, useEffect } from "react";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import { Button } from "@mui/material";
 
+export var imgS:any ;
+
 const HomeP = () => {
+
   const [userImage, setUserImage] = useState([]);
 
   const onImageChange = (
@@ -11,8 +14,9 @@ const HomeP = () => {
     addUpdateIndex: number[] | undefined
   ) => {
     // data for submit
-    console.log(imageList, addUpdateIndex);
+    // console.log(imageList, addUpdateIndex);
     setUserImage(imageList as never[]);
+    imgS = imageList;
   }
   return (
     <>
@@ -46,15 +50,14 @@ const HomeP = () => {
               <Box
                 sx={{ justifyContent: "center" }}  >
 
-                {imageList.map((image, index) => (
-                  <img src={image.dataURL} alt="" />
+                {imageList.map((image) => (
+                  <img src={image.dataURL} key={"img_to_send"} alt="" />
                 ))}
               </Box>
             </>
           )}
         </ImageUploading>
       </Box>
-
     </>
   )
 }

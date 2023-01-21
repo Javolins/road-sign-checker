@@ -8,7 +8,6 @@ import { paths } from '../../paths';
 import Sidebar from './Sidebar';
 import { Link as LinkIcon } from '@mui/icons-material';
 import { ListItemButton } from '@mui/material';
-import VerifyLetterModal from '../SendPhoto';
 import React from 'react';
 
 const AppLayout = () => {
