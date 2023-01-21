@@ -11,6 +11,8 @@ import SendAlert from './SendAlert';
 import LeftSide from './LeftSide';
 import RightSide from './RightSide';
 
+export const index: number = 0;
+
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -28,19 +30,29 @@ const style = {
   padding: '0',
 };
 
+let uid: any;
+
 function sendImgToBackend() {
   const formData = new FormData();
   console.log("send");
   formData.append('userImg', imgS[0].file);
   console.log(formData);
-  fetch('https://roadsigns.p4m1.top/upload', {
-      method: 'POST',
-      body: formData,
-    }).then((response) => {
-      response.json().then((body) => {
-        console.log(body);
-      });
+  fetch('https://roadsigns.p4m1.top/api/upload', {
+    method: 'POST',
+    body: formData,
+  }).then((response) => {
+    response.json().then((body) => {
+      // console.log("get fedback")
+      // console.log(body);
+      uid = body.uid;
+      // console.log(uid);
     });
+  });
+}
+function getImgInfoFromBackedn(openModal: any) {
+  fetch('https://roadsigns.p4m1.top/api/info', {}).then((response) => {
+    openModal(true);
+  })
 }
 
 
@@ -62,7 +74,8 @@ function SendPhoto() {
     else if (imgS.length == 1) {
       sendImgToBackend();
       setAlert(false);
-      setOpen(true);
+      getImgInfoFromBackedn(setOpen)
+        ;
     }
     // console.log(imgS[0].file);}
 

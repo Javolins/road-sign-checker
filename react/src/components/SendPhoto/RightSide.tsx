@@ -1,5 +1,7 @@
 import { Typography } from "@mui/material";
 import React from "react";
+import { itemData } from '../ImageGalery';
+import { index } from './SendPhoto';
 
 const RightSide = () => (
     <>
@@ -38,7 +40,7 @@ const RightSide = () => (
                     marginLeft: "40px",
                     marginRight: "40px",
                     }}>
-                A-6a "skrzyżowanie z drogą podporządkowaną występującą po obu stronach" ostrzega o skrzyżowaniu z drogą podporządkowaną, występującą po obu stronach drogi. Umieszczona pod znakiem A-6a, tabliczka T-6b wskazuje układ dróg na skrzyżowaniu.
+                {itemData[index].info}
                 </Typography>
 
 

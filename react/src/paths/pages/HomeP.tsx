@@ -26,6 +26,7 @@ const HomeP = () => {
       }}>
         <ImageUploading
           multiple
+          acceptType = {['png', 'jpg', 'jpge']}
           value={userImage}
           onChange={onImageChange}
           maxNumber={1}
@@ -43,6 +44,7 @@ const HomeP = () => {
                   sx={{ margin: '0 auto', display: "flex" }}
                   variant="contained" onClick={onImageUpload}>Select Image </Button>
                 &nbsp;
+
                 <Button
                   sx={{ margin: '0 auto', display: "flex" }}
                   variant="contained" onClick={onImageRemoveAll}>Remove image </Button>
@@ -51,7 +53,7 @@ const HomeP = () => {
                 sx={{ justifyContent: "center" }}  >
 
                 {imageList.map((image) => (
-                  <img src={image.dataURL} key={"img_to_send"} alt="" />
+                  <img src={image.dataURL} key={"img_to_send"} alt="" height={600} width={800}/>
                 ))}
               </Box>
             </>

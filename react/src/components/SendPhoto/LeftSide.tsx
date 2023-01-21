@@ -1,5 +1,8 @@
 import React from 'react';
+import { itemData } from '../ImageGalery';
+import { index } from './SendPhoto';
 import './style.css'
+
 
 const LeftSide = () => (
     <>
@@ -16,7 +19,7 @@ const LeftSide = () => (
                 width: 226,
                 borderTopLeftRadius: 'inherit',
             }}
-            src="https://sklepdrogowy.pl/userdata/public/gfx/b0d903c3bebeb537b2f71f0cab14a896.jpg"/>
+            src={itemData[index].img}/>
         <div
             style={{ 
                 width: 226, 
@@ -24,7 +27,7 @@ const LeftSide = () => (
                 }}>
             <section>
                 <b>Numer znaku</b>
-                <p>A-6a</p>
+                <p>{itemData[index].title}</p>
             </section>
             <section>
                 <b>Typ:</b>
