@@ -1,18 +1,21 @@
 from App import app
 from flask import render_template, url_for, redirect, flash, request, session, jsonify
-import os
 from werkzeug.utils import secure_filename
-import uuid
+import uuid, os
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from threading import Thread
 from time import sleep
 
+import sys
+sys.path.insert(1, '/home/michal/repo/road-sign-checker/ai/sign-classificators/img_scripts')
+from img_scripts import crop_image as ci
+
 
 limiter = Limiter(get_remote_address,app=app,storage_uri="memory://")
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
-def pipeline():
+def pipeline(uid):
     sleep(10)
     print('This is from another thread')
 
@@ -39,7 +42,7 @@ def upload():
     destination="/".join([app.config['UPLOAD_FOLDER'], filename])
     file.save(destination)
     
-    thread = Thread(target=pipeline)
+    thread = Thread(target=pipeline, args=(uid))
     thread.start()
     
     return jsonify({"info":"File successfully saved","uid":uid})
