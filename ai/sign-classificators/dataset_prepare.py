@@ -38,16 +38,20 @@ def applyMagentaBackground(image, mask):
     imageWithMagentaBackground = applyColorBackground(image, mask, magentaColor)
     return imageWithMagentaBackground
 
+def thresholdWithMagentaBackground(BGR_image):
+    HSV_image = cv2.cvtColor(BGR_image, cv2.COLOR_BGR2HSV)
+    HSV_mean = findMainColor(HSV_image)
+    mask = getInsideMask(HSV_image, HSV_mean)
+    signWithMagendaBakcground = applyMagentaBackground(BGR_image, mask)
+    return signWithMagendaBakcground
+
 def preprocessSignImage(preprocessedDatasetDirPath, rawSignPath, signCode, signFileExtension):
     BGR_image = cv2.imread(rawSignPath)
 
     #add top and bottom border to adjust to 90x90 pixels(BIASED FOR WARNING SIGNS)
     BGR_image = cv2.copyMakeBorder(BGR_image, 5, 5, 0, 0, cv2.BORDER_REPLICATE)
 
-    HSV_image = cv2.cvtColor(BGR_image, cv2.COLOR_BGR2HSV)
-    HSV_mean = findMainColor(HSV_image)
-    mask = getInsideMask(HSV_image, HSV_mean)
-    signWithMagendaBakcground = applyMagentaBackground(BGR_image, mask)
+    signWithMagendaBakcground = thresholdWithMagentaBackground(BGR_image)
 
     noCopies = 4
     for i in range(noCopies):
