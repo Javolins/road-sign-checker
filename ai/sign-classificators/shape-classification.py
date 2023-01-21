@@ -70,7 +70,7 @@ if __name__ == '__main__':
     noVertices = getNumberOfVertices(mainContour, znakSize)
     print(noVertices)
 
-    shape = getShape(mainContour)
+    shape = getShape(mainContour, znakSize)
     print(shape)
 
     cv2.waitKey(0)

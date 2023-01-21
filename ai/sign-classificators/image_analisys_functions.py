@@ -37,11 +37,14 @@ def getCircularity(contour):
     circularity = (4 * np.pi * area) / (perimeter ** 2)
     return circularity
 
+def getMaskContour(mask):
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    mainContour = contours[0]
+    return mainContour
 def getZnakContour(znakImage):
     #assert znakImage is valid object returned by cv2.imread
     znakShape = binarizeToExtractShapeMask(znakImage)
-    contours, hierarchy = cv2.findContours(znakShape, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    mainContour = contours[0]
+    mainContour = getMaskContour(znakShape)
     return mainContour
 
 def getZnakCircularity(znakImage):
@@ -69,15 +72,14 @@ class ImageSize:
         size = ImageSize(openCVImage.shape[1], openCVImage.shape[0])
         return size
 
-def getShape(contour):
-    #contour - binarized image of znak where white pixels represent its area
+def getShape(contour, imageSize):
+    #contour - first element exctracted from cv2.findContours
     circularity = getCircularity(contour)
 
     CIRCLE_THRESHOLD = 0.95
     isNotCircle = circularity < CIRCLE_THRESHOLD
 
     if isNotCircle:
-        imageSize = ImageSize.createFromOpenCVImage(contour)
         numberOfVertices = getNumberOfVertices(contour, imageSize)
         if numberOfVertices == 3:
             return ZnakShape.TRIANGLE
@@ -89,3 +91,10 @@ def getShape(contour):
             return ZnakShape.UNKNOWN
     else:
         return ZnakShape.CIRCLE
+
+def getMaskShape(mask):
+    #@param mask binary image where white represents shape and black background
+    maskContour = getMaskContour(mask)
+    imageSize = ImageSize.createFromOpenCVImage(mask)
+    shape = getShape(maskContour, imageSize)
+    return shape

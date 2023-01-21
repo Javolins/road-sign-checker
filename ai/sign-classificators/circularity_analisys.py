@@ -30,14 +30,15 @@ if __name__ == '__main__':
             print(filePath + " is not a valid image file")
             exit(4)
 
-        imageSize = znakImage.shape[:2]
+        imageSize = ImageSize.createFromOpenCVImage(znakImage)
 
         mainContour = getZnakContour(znakImage)
 
 
         numberOfVertices = getNumberOfVertices(mainContour, imageSize)
 
-        shape = getShape(mainContour)
+
+        shape = getShape(mainContour, imageSize)
 
         znakiElement = {
             "fileName": fileName,
