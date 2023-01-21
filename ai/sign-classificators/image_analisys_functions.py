@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import math
 
 from enum import Enum
 
@@ -36,6 +37,13 @@ def getCircularity(contour):
     perimeter = 2 * np.pi * radius
     circularity = (4 * np.pi * area) / (perimeter ** 2)
     return circularity
+
+def getEllipsisity(contour):
+    area = cv2.contourArea(contour)
+    (x, y), (MA, ma), angle = cv2.fitEllipse(contour)
+    ellipseArea = math.PI * MA * ma
+    ellipsisity = area/ellipseArea
+    return ellipsisity
 
 def getMaskContour(mask):
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -74,10 +82,10 @@ class ImageSize:
 
 def getShape(contour, imageSize):
     #contour - first element exctracted from cv2.findContours
-    circularity = getCircularity(contour)
+    ellipsisity = getEllipsisity(contour)
 
-    CIRCLE_THRESHOLD = 0.95
-    isNotCircle = circularity < CIRCLE_THRESHOLD
+    ELLIPSE_THRESHOLD = 0.95
+    isNotCircle = ellipsisity < ELLIPSE_THRESHOLD
 
     if isNotCircle:
         numberOfVertices = getNumberOfVertices(contour, imageSize)
