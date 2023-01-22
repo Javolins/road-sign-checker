@@ -32,7 +32,7 @@ const LeftSide = () => (
             </section>
             <section>
                 <b>Typ:</b>
-                <p>ostrzegawczy</p>
+                <p>{itemData[index].typ}</p>
             </section>           
         </div>
     </div>
