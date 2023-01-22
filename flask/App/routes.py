@@ -23,7 +23,7 @@ from img_scripts import nnpaths as nn
 limiter = Limiter(get_remote_address,app=app,storage_uri="memory://")
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
-def pipeline(uid):
+def pipeline(uid, deletePhotos):
     filepath_img = "/".join([app.config['UPLOAD_FOLDER'], uid + '.jpg'])
     filepath_mask = "/".join([app.config['UPLOAD_FOLDER'], uid + '_mask.jpg'])
     filepath_json = "/".join([app.config['DOWNLOAD_FOLDER'], uid + '.json'])
@@ -64,6 +64,8 @@ def pipeline(uid):
         json.dump(info, outfile)
     
     print(info)
+    os.remove(filepath_img)
+    os.remove(filepath_mask)
     #TODO
 
 @app.route('/')
@@ -89,7 +91,7 @@ def upload():
     destination="/".join([app.config['UPLOAD_FOLDER'], filename])
     file.save(destination)
     
-    thread = Thread(target=pipeline, kwargs={"uid":uid})
+    thread = Thread(target=pipeline, kwargs={"uid":uid,"deletePhotos":True})
     thread.start()
     
     return jsonify({"info":"File successfully saved","uid":uid})
