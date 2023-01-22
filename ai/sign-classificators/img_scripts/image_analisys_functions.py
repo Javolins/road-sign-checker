@@ -138,6 +138,10 @@ def getShape(contour, maskSize):
 def getMaskShape(mask):
     #@param mask binary image where white represents shape and black background
     maskContour = getMaskContour(mask)
-    maskSize = ImageSize.createFromMask(maskContour)
-    shape = getShape(maskContour, maskSize)
-    return shape
+    contourArea = cv2.contourArea(maskContour)
+    if contourArea != 0:
+        maskSize = ImageSize.createFromMask(maskContour)
+        shape = getShape(maskContour, maskSize)
+        return shape
+    else:
+        return ZnakShape.UNKNOWN
