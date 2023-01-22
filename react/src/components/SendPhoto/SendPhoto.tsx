@@ -84,7 +84,7 @@ async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any, s
         if (body.info) {
           console.log(body.info);
           retry_geting_feed_back += 1;
-          if (retry_geting_feed_back < 15)
+          if (retry_geting_feed_back < 10)
             getImgInfoFromBackedn(openModal, uid, setAlert2, setAlert3);
         }
         else {
