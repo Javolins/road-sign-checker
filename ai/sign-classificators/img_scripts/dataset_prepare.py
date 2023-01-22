@@ -94,7 +94,8 @@ class PreprocessSignsResult:
         self.outputDirPath = outputDirPath
         self.preprocessedSignFilenames = preprocessedSignFilenames
 def preprocessSignsForNN(subsetDirName):
-    pathBuildr = SignsNeuralNetworkPathBuilers()
+    rootPath = os.path.abspath(os.path.join(__file__, '..', '..'))
+    pathBuildr = SignsNeuralNetworkPathBuilers(rootPath)
     rawDatasetDirPath = pathBuildr.getRawDatasetDirPath(subsetDirName)
     preprocessedDatasetDirPath = pathBuildr.getPreprocessedDatasetDirPath(subsetDirName)
     preprocessedSignFilenames = preprocessSigns(rawDatasetDirPath, preprocessedDatasetDirPath)

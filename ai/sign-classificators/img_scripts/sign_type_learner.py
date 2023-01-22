@@ -6,6 +6,8 @@ from fastai.vision.augment import aug_transforms
 
 import re
 
+import os
+
 from matplotlib import pyplot
 
 from fastai.vision.all import *
@@ -21,7 +23,8 @@ class LearningResult:
 class SpecificSignTypeLearner:
     def __init__(self, datasetDirPath, modelName, sampleRepeats):
         self.datasetDirPath = datasetDirPath
-        pathBuilder = SignsNeuralNetworkPathBuilers()
+        rootPath = os.path.join(__file__, '..')
+        pathBuilder = SignsNeuralNetworkPathBuilers(rootPath)
         self.modelPath = pathBuilder.getModelPath(modelName)
 
         learnerOutputDirPath = pathBuilder.getLearnerDirPath(modelName)
@@ -68,7 +71,8 @@ if __name__ == '__main__':
         print("epochs is not a valid integer")
         exit(3)
 
-    pathBuilder = SignsNeuralNetworkPathBuilers()
+    rootPath = os.path.abspath(os.path.join(__file__, '..', '..'))
+    pathBuilder = SignsNeuralNetworkPathBuilers(rootPath)
     preprocessedDatasetDirPath = pathBuilder.getPreprocessedDatasetDirPath(signSubsetName)
 
     learner = SpecificSignTypeLearner(preprocessedDatasetDirPath, signSubsetName)

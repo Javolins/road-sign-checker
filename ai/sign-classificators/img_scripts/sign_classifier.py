@@ -67,7 +67,8 @@ if __name__ == '__main__':
 
     signType = sys.argv[1]
 
-    pathBuilder = SignsNeuralNetworkPathBuilers()
+    rootPath = os.path.abspath(os.path.join(__file__, '..', '..'))
+    pathBuilder = SignsNeuralNetworkPathBuilers(rootPath)
     modelPath = pathBuilder.getModelPath(signType)
 
     if not os.path.exists(modelPath):

@@ -13,7 +13,8 @@ def plotGrid(dirPath):
     numberOfOutputSamples = len(preprocessedSampleNames)
     columns = 4
     rows = math.ceil(numberOfOutputSamples / 4)
-    plt.figure()
+    fig = plt.figure()
+    plt.subplots_adjust(top = 0.99, bottom=0.01, hspace=1.5)
     for i in range(numberOfOutputSamples):
         subplotIndex = i + 1
         plt.subplot(rows, columns, subplotIndex)
