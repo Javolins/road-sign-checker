@@ -27,7 +27,6 @@ const Sidebar = ({ children }: SidebarProps) => {
         {children}
       </Box>
       <SendPhoto/>
-
     </Box>
 
   )

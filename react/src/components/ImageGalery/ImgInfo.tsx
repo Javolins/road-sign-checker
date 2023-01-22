@@ -531,18 +531,18 @@ export var itemData = [
         img: 'https://www.autocentrum.pl/system/assets/images/prawo-jazdy/wyklady/96.gif',
         info: 'autostrada',
     },
-    {
-        typ: 'Informacyjny',
-        title: 'D-3',
-        img: '',
-        info: '',
-    },
-    {
-        typ: 'Informacyjny',
-        title: 'D-3',
-        img: '',
-        info: '',
-    },
+    // {
+    //     typ: 'Informacyjny',
+    //     title: 'D-3',
+    //     img: '',
+    //     info: '',
+    // },
+    // {
+    //     typ: 'Informacyjny',
+    //     title: 'D-3',
+    //     img: '',
+    //     info: '',
+    // },
 
 
 ];

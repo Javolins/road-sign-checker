@@ -65,7 +65,7 @@ const RightSide = () => (
                 variant:"caption",
                 fontSize: '.7rem',
             }}>
-                A: {additionalInformationAboutImgProcesing.finalColorClasifaier[0]}
+                A: {Math.floor(additionalInformationAboutImgProcesing.finalColorClasifaier[0]*10000)/100}%
             </Typography>
             <Typography sx={{
                 marginLeft: "40px",
@@ -73,7 +73,7 @@ const RightSide = () => (
                 variant:"caption",
                 fontSize: '.7rem',
             }}>
-            B: {additionalInformationAboutImgProcesing.finalColorClasifaier[1]}
+            B: {Math.floor(additionalInformationAboutImgProcesing.finalColorClasifaier[1]*10000)/100}%
             </Typography>
             <Typography sx={{
                 marginLeft: "40px",
@@ -81,7 +81,7 @@ const RightSide = () => (
                 variant:"caption",
                 fontSize: '.7rem',
             }}>
-            C: {additionalInformationAboutImgProcesing.finalColorClasifaier[2]}
+            C: {Math.floor(additionalInformationAboutImgProcesing.finalColorClasifaier[2]*10000)/100}%
             </Typography>
             <Typography sx={{
                 marginLeft: "40px",
