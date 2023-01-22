@@ -62,7 +62,7 @@ async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any, s
   {
     uid
   }
-  await delay(1000);
+  await delay(1000*(retry_geting_feed_back +1));
   sendToRCla.uid = uid;
   let jsonString = JSON.stringify(sendToRCla);
   console.log(jsonString);
