@@ -142,10 +142,10 @@ export var itemData = [
     },
     {
         typ: 'Ostrzegawczy',
-        title: 'A-19',
-        img: 'https://znaki-drogowe.pl/img/ostrzegawcze/A-19-boczny-wiatr.png',
-        info: 'Boczny wiatr Ostrzega o miejscu, w którym mogą występować silne boczne podmuchy wiatru.',
-    },    
+        title: 'A-20',
+        img: 'A-20-odcinek-jezdni-o-ruchu-dwukierunkowym.png',
+        info: 'Ostrzega jadących jezdnią jednokierunkową o miejscu, w którym rozpoczyna się ruch dwukierunkowy',
+    },  
     {
         typ: 'Zakazu',
         title: 'B-1',
@@ -160,27 +160,7 @@ export var itemData = [
         info: 'Zakaz wjazdu  Oznacza zakaz wjazdu pojazdów na drogę lub jezdnię od strony jego umieszczenia; zakaz dotyczy również kolumn pieszych oraz jeźdźców i poganiaczy. Umieszczona pod znakiem B-2 tabliczka T-22 wskazuje, że znak nie dotyczy rowerów jednośladowych wjeżdżających na wyznaczony na jezdni pas ruchu dla rowerów.',
     },
 
-    {
-        typ: 'Zakazu',
-        title: 'B-3',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-3-zakaz-wjazdu-pojazdow-silnikowych-z-wyjatkiem-motocykli-jednosladowych.png",
-        info: 'Zakaz wjazdu pojazdów silnikowych, z wyjątkiem motocykli jednośladowych  Oznacza zakaz ruchu pojazdów silnikowych; zakaz nie dotyczy motocykli jednośladowych',
-    },
-
-    {
-        typ: 'Zakazu',
-        title: 'B-3a',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-3a-zakaz-wjazdu-autobusow.png",
-        info: 'Zakaz wjazdu autobusów  Oznacza zakaz ruchu autobusów',
-    },
-
-    {
-        typ: 'Zakazu',
-        title: 'B-4',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-4-zakaz-wjazdu-motocykli.png",
-        info: 'Zakaz wjazdu motocykli  Oznacza zakaz ruchu motocykli.',
-    },
-
+    
     {
         typ: 'Zakazu',
         title: 'B-5',
@@ -188,19 +168,7 @@ export var itemData = [
         info: 'Zakaz wjazdu samochodów ciężarowych  Oznacza zakaz ruchu:  1). samochodów ciężarowych o DMC przekraczającej 3,5 t, 2). ciągników samochodowych,  3). pojazdów specjalnych i używanych do celów specjalnych o DMC przekraczającej 3,5 t, 4). ciągników rolniczych,  5). pojazdów wolnobieżnych. Określona na znaku B-5 albo na tabliczce umieszczonej pod nim masa oznacza, że zakaz dotyczy pojazdu (zespołu pojazdów), którego dopuszczalna masa całkowita przekracza masę podaną na znaku albo na tabliczce.',
     },
 
-    {
-        typ: 'Zakazu',
-        title: 'B-6',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-6-zakaz-wjazdu-ciagnikow-rolniczych.png",
-        info: 'Zakaz wjazdu ciągników rolniczych  Oznacza zakaz ruchu ciągników rolniczych i pojazdów wolnobieżnych.',
-    },
-
-    {
-        typ: 'Zakazu',
-        title: 'B-7',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-7-zakaz-wjzadu-pojazdow-silnikowych-z-przyczepa.png",
-        info: 'Zakaz wjazdu pojazdów silnikowych z przyczepą  Oznacza zakaz ruchu pojazdów silnikowych z przyczepą (przyczepami); zakaz nie dotyczy pojazdów z przyczepą jednoosiową lub naczepą.Określona na znaku B-7 lub na tabliczce umieszczonej pod nim masa dotyczy dopuszczalnej masy całkowitej przyczepy, a w razie ciągnięcia dwóch przyczep - sumy ich mas.',
-    },
+   
 
     {
         typ: 'Zakazu',
@@ -216,36 +184,7 @@ export var itemData = [
         info: 'Zakaz wjazdu rowerów  Oznacza zakaz ruchu rowerów na jezdni i poboczu.',
     },
 
-    {
-        typ: 'Zakazu',
-        title: 'B-10',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-10-zakaz-wjazdu-motorowerow.png",
-        info: 'Zakaz wjazdu motorowerów  Oznacza zakaz ruchu motorowerów.',
-    },
-
-    {
-        typ: 'Zakazu',
-        title: 'B-11',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-11-zakaz-wjazdu-wozkow-rowerowych-i-rowerow-wielosladowych.png",
-        info: 'Zakaz wjazdu wózków rowerowych i rowerów wielośladowych  Oznacza zakaz wjazdu wózków rowerowych i rowerów wielośladowych.',
-    },
-
-    {
-        typ: 'Zakazu',
-        title: 'B-12',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-12-zakaz-wjazdu-wozkow-recznych.png",
-        info: 'Zakaz wjazdu wózków ręcznych  Oznacza zakaz ruchu na jezdni i poboczu wózków ręcznych przeznaczonych do używania na jezdni, prowadzonych, ciągniętych lub pchanych.',
-    },
-
-   
-    
-
-    {
-        typ: 'Zakazu',
-        title: 'B-20',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-20-stop.png",
-        info: 'STOP    Oznacza: 1. zakaz wjazdu na skrzyżowanie bez zatrzymania się przed drogą z pierwszeństwem, 2. obowiązek ustąpienia pierwszeństwa kierującym poruszającym się tą drogą. Zatrzymanie powinno nastąpić w wyznaczonym w tym celu miejscu, a w razie jego braku - w takim miejscu, w którym kierujący może upewnić się, że nie utrudni ruchu na drodze z pierwszeństwem. Znak Stop B-20 umieszczony w obrębie skrzyżowania dotyczy tylko najbliższej jezdni, przed którą został ustawiony. Przepisy stosuje się odpowiednio do znaku B-20 umieszczonego przed torowiskiem pojazdów szynowych lub w innych miejscach przecinania się kierunków ruchu. Umieszczona pod znakiem B-20 tabliczka T-6c lub T-6d wskazuje rzeczywisty przebieg drogi z pierwszeństwem przez skrzyżowanie.',
-    },
+  
 
     {
         typ: 'Zakazu',
@@ -261,19 +200,6 @@ export var itemData = [
         info: 'Zakaz skręcania w prawo  Zabrania skręcania w prawo. Zakaz wyrażony znakiem B-22 obowiązuje na najbliższym skrzyżowaniu. Znak B-22 znajdujący się w obrębie skrzyżowania dotyczy tylko najbliższej jezdni, przed którą został umieszczony. Umieszczona pod znakiem B-22 tabliczka T-22 wskazuje, że znak nie dotyczy rowerów jednośladowych skręcających na drogę dla rowerów lub wyznaczony na jezdni pas ruchu przeznaczony dla tych pojazdów.',
     },
 
-    {
-        typ: 'Zakazu',
-        title: 'B-23',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-23-zakaz-zawracania.png",
-        info: 'Zakaz zawracania  Zabrania kierującym zawracania do najbliższego skrzyżowania włącznie.',
-    },
-
-    {
-        typ: 'Zakazu',
-        title: 'B-24',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-24-koniec-zakazu-zawracania.png",
-        info: 'Koniec zakazu zawracania  Oznacza odwołanie zakazu zawracania przed skrzyżowaniem.',
-    },
 
     {
         typ: 'Zakazu',
@@ -289,34 +215,7 @@ export var itemData = [
         info: 'Zakaz wyprzedzania przez samochody ciężarowe  Zabrania wyprzedzania pojazdów silnikowych wielośladowych kierującemu: 1) samochodem ciężarowym o dopuszczalnej masie całkowitej przekraczającej 3,5 t, 2) ciągnikiem samochodowym, 3) pojazdem specjalnym lub używanym do celów specjalnych - o dopuszczalnej masie całkowitej przekraczającej 3,5 t. Jeżeli zakaz wyrażony przez znak B-25 nie jest uprzednio odwołany znakiem B-28 lub B-42, to obowiązuje do najbliższego skrzyżowania.',
     },
 
-    {
-        typ: 'Zakazu',
-        title: 'B-27',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-27-koniec-zakazu-wyprzedzania.png",
-        info: 'Koniec zakazu wyprzedzania  Oznacza koniec obowiązywania zakazu zarządzonego znakiem B-25.',
-    },
-
-    {
-        typ: 'Zakazu',
-        title: 'B-28',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-28-koniec-zakazu-wyprzedzania-przez-samochody-ciezarowe.png",
-        info: 'Koniec zakazu wyprzedzania przez samochody ciężarowe  Oznacza koniec obowiązywania zakazu zarządzonego znakiem B-26.',
-    },
-
-    {
-        typ: 'Zakazu',
-        title: 'B-29',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-29-zakaz-uzywania-sygnalow-dzwiekowych.png",
-        info: 'Zakaz używania sygnałów dźwiękowych  Zabrania używania tych sygnałów, chyba że jest to konieczne w celu ostrzeżenia o bezpośrednim zagrożeniu bezpieczeństwa ruchu. Jeżeli zakaz wyrażony przez znak B-29 nie jest uprzednio odwołany znakiem B-30 lub B-42, to obowiązuje do najbliższego skrzyżowania',
-    },
-
-    {
-        typ: 'Zakazu',
-        title: 'B-30',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-30-koniec-zakazu-uzywania-sygnalow-dzwiekowych.png",
-        info: 'Koniec zakazu używania sygnałów dźwiękowych  Oznacza koniec obowiązywania zakazu zarządzonego znakiem B-29.',
-    },
-
+   
     {
         typ: 'Zakazu',
         title: 'B-31',
@@ -327,56 +226,10 @@ export var itemData = [
    
     {
         typ: 'Zakazu',
-        title: 'B-35',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-35-zakaz-postoju.png",
-        info: 'Zakaz postoju  Oznacza zakaz postoju pojazdu. Jeżeli zakaz wyrażony znakiem B-36 nie jest uprzednio odwołany przez taki sam znak z tabliczką T-25c lub znak B-35, to obowiązuje do najbliższego skrzyżowania. Zakaz wyrażony tym znakiem: dotyczy tej strony drogi, po której znak się znajduje, z wyjątkiem miejsc, gdzie za pomocą znaku dopuszcza się postój lub zatrzymanie, dotyczy również kolumn pieszych oraz jeźdźców i poganiaczy, nie dotyczy pojazdów unieruchomionych ze względu na warunki lub przepisy ruchu drogowego.</li></ul>',
-    },
-
-    {
-        typ: 'Zakazu',
-        title: 'B-36',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-36-zakaz-zatrzymywania-sie.png",
-        info: 'Zakaz zatrzymywania się  Oznacza zakaz zatrzymywania pojazdu. Jeżeli zakaz wyrażony znakiem B-36 nie jest uprzednio odwołany przez taki sam znak z tabliczką T-25c lub znak B-35, to obowiązuje do najbliższego skrzyżowania.Zakaz wyrażony tym znakiem: dotyczy tej strony drogi, po której znak się znajduje, z wyjątkiem miejsc, gdzie za pomocą znaku dopuszcza się postój lub zatrzymanie, dotyczy również kolumn pieszych oraz jeźdźców i poganiaczy, nie dotyczy pojazdów unieruchomionych ze względu na warunki lub przepisy ruchu drogowego.'
-    },
-
-    {
-        typ: 'Zakazu',
-        title: 'B-37',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-37-zakaz-postoju-w-dni-nieparzyste.png",
-        info: 'Zakaz postoju w dni nieparzyste  Oznacza zakaz postoju pojazdów w nieparzyste dni miesiąca; zakaz nie obowiązuje od godziny 21 do 24.Jeżeli zakaz wyrażony znakiem B-37 nie jest uprzednio odwołany przez taki sam znak z tabliczką T-25c, to obowiązuje do najbliższego skrzyżowania.',
-    },
-
-    {
-        typ: 'Zakazu',
-        title: 'B-38',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-38-zakaz-postoju-w-dni-parzyste.png",
-        info: 'Zakaz postoju w dni parzyste  Oznacza zakaz postoju pojazdów w parzyste dni miesiąca; zakaz nie obowiązuje od godziny 21 do 24. Jeżeli zakaz wyrażony znakiem B-38 nie jest uprzednio odwołany przez taki sam znak z tabliczką T-25c, to obowiązuje do najbliższego skrzyżowania.',
-    },
-
-   
-
-    {
-        typ: 'Zakazu',
-        title: 'B-40',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-40-koniec-strefy-ograniczonego-postoju.png",
-        info: 'Koniec strefy ograniczonego postoju  Oznacza wyjazd ze strefy ograniczonego postoju.',
-    },
-
-    {
-        typ: 'Zakazu',
         title: 'B-41',
         img: " https://znaki-drogowe.pl/img/zakazu/B-41-zakaz-ruchu-pieszych.png",
         info: 'Zakaz ruchu pieszych  Oznacza zakaz ruchu pieszych po tej stronie drogi, po której znak jest umieszczony.',
     },
-
-    {
-        typ: 'Zakazu',
-        title: 'B-42',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-42-koniec-zakazow.png",
-        info: 'Koniec zakazów  Oznacza odwołanie zakazów wyrażonych znakami B-23, B-25, B-26, B-29 i B-33.',
-    },
-
-   
 
     {
         typ: 'Nakazu',
@@ -456,12 +309,7 @@ export var itemData = [
         img: 'https://znaki-drogowe.pl/img/nakazu/C-13-droga-dla-rowerow.png',
         info: 'Droga dla rowerów	 Oznacza drogę przeznaczoną dla kierujących rowerami jednośladowymi, którzy są obowiązani do korzystania z tej drogi.'
     },
-    {
-        typ: 'Nakazu',
-        title: 'C-13a',
-        img: 'https://znaki-drogowe.pl/img/nakazu/C-13a-koniec-drogi-dla-rowerow.png',
-        info: 'Koniec drogi dla rowerów	 Oznacza koniec drogi przeznaczonej dla kierujących rowerami jednośladowymi.'
-    },
+
 
     {
         typ: 'Nakazu',
@@ -469,25 +317,9 @@ export var itemData = [
         img: 'https://znaki-drogowe.pl/img/nakazu/C-16-droga-dla-pieszych.png',
         info: 'Droga dla pieszych	 Oznacza drogę lub jej część przeznaczoną dla pieszych, którzy są obowiązani z niej korzystać.'
     },
-    {
-        typ: 'Nakazu',
-        title: 'C-16a',
-        img: 'https://znaki-drogowe.pl/img/nakazu/C-16a-koniec-drogi-dla-pieszych.png',
-        info: 'Koniec drogi dla pieszych	 Oznacza koniec drogi przeznaczonej dla pieszych.'
-    },
 
-    {
-        typ: 'Nakazu',
-        title: 'C-18',
-        img: 'https://znaki-drogowe.pl/img/nakazu/C-18-nakaz-uzywania-lancuchow-przeciwposlizgowych.png',
-        info: 'Nakaz używania łańcuchów przeciwpoślizgowych	 Ooznacza, że na drodze, na której znak został umieszczony, kierujący pojazdem silnikowym jest obowiązany stosować łańcuchy przeciwpoślizgowe na co najmniej dwóch kołach napędowych; umieszczona pod znakiem tabliczka od T-23a do T-23j oznacza, że znak dotyczy pojazdów określonych na tabliczce.'
-    },
-    {
-        typ: 'Nakazu',
-        title: 'C-19',
-        img: 'https://znaki-drogowe.pl/img/nakazu/C-19-koniec-nakazu-uzywania-lancuchow-przeciwposlizgowych.png',
-        info: 'Koniec nakazu używania łańcuchów przeciwpoślizgowych	 Oznacza miejsce, w którym nakaz określony znakiem C-18 przestaje obowiązywać.',
-    },
+
+
             {
         typ: 'Informacyjny',
         title: 'D-3',
@@ -531,12 +363,12 @@ export var itemData = [
         img: 'https://www.autocentrum.pl/system/assets/images/prawo-jazdy/wyklady/96.gif',
         info: 'autostrada',
     },
-    // {
-    //     typ: 'Informacyjny',
-    //     title: 'D-3',
-    //     img: '',
-    //     info: '',
-    // },
+    {
+        typ: 'Informacyjny',
+        title: 'D-4a',
+        img: 'D-4a-droga-bez-przejazdu.png',
+        info: 'Oznacza początek drogi bez przejazdu.',
+    },
     // {
     //     typ: 'Informacyjny',
     //     title: 'D-3',
