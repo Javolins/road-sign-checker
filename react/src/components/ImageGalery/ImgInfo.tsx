@@ -712,4 +712,11 @@ export var itemData = [
         img: 'https://znaki-drogowe.pl/img/nakazu/C-19-koniec-nakazu-uzywania-lancuchow-przeciwposlizgowych.png',
         info: 'Koniec nakazu używania łańcuchów przeciwpoślizgowych	 Oznacza miejsce, w którym nakaz określony znakiem C-18 przestaje obowiązywać.',
     },
+    {
+        typ: 'Nakazu',
+        title: 'D-6',
+        img: 'https://znaki-drogowe.pl/img/informacyjne/D-6-przejscie-dla-pieszych.png',
+        info: 'Onacza miejsce przeznaczone do przechodzenia pieszych w poprzek drogi.Kierujący pojazdem zbliżający się do miejsca oznaczonego znakiem jest obowiązany zmniejszyć prędkość tak, aby nie narazić na niebezpieczeństwo pieszych znajdujących się w tych miejscach lub na nie wchodzących. Umieszczona pod znakiem tabliczka T-27 wskazuje, że przejście dla pieszych jest szczególnie uczęszczane przez dzieci.'
+
+    }
 ];

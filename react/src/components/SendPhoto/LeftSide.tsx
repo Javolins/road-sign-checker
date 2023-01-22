@@ -31,8 +31,8 @@ const LeftSide = () => (
                 <p>{itemData[index].title}</p>
             </section>
             <section>
-                <b>Typ:</b>
-                <p>{itemData[index].title}</p>
+                <b>Typ rozpoznany na podstawie numeru:</b>
+                <p>{itemData[index].typ}</p>
             </section>           
         </div>
     </div>

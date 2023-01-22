@@ -51,7 +51,7 @@ export function SendAlertNoRecImg(open:boolean, setOpen:any) {
           }
           sx={{ mb: 2 }}
         >
-          Not recognised img
+          Nie rozpoznano obrazu
         </Alert>
       </Collapse>
     </Box>
@@ -79,7 +79,7 @@ export function SendAlertNoSignInDataBase(open:boolean, setOpen:any) {
           }
           sx={{ mb: 2 }}
         >
-          No img in data base yet
+          Nie ma zdjęcia na froncie wymaga kontaktu z devem
         </Alert>
       </Collapse>
     </Box>
@@ -108,6 +108,33 @@ export function SendAlertBackendFuckUp(open:boolean, setOpen:any) {
           sx={{ mb: 2 }}
         >
           The back end bless you with no feed back enjoy you last secend
+        </Alert>
+      </Collapse>
+    </Box>
+  );
+}
+
+export function SendAlertNotRectangle(open:boolean, setOpen:any) {
+  return (
+    <Box sx={{ width: '100%' }}>
+      <Collapse in={open}>
+        <Alert
+        severity="error"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+            Zdjęcie musi byc łopatologiczno kwadratowe i tylko w proporcjach 1:1 co do pojedynczego piksela!!!
         </Alert>
       </Collapse>
     </Box>

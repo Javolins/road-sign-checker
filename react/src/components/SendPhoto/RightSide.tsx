@@ -2,6 +2,20 @@ import { Typography } from "@mui/material";
 import React from "react";
 import { itemData } from '../ImageGalery';
 import { additionalInformationAboutImgProcesing, index } from './SendPhoto';
+
+
+function getM(arr : any) 
+{
+            const index2 = arr.indexOf(Math.max(...arr));
+    let nap ="na podstawie koloru otrzymano typ:";
+    if(index2 ==0)
+        nap+="Ostrzegawcze";
+    if(index2 ==1)
+        nap+="Zakazu";
+    if(index2 ==2)
+        nap+="Nakazu/Informacyjne";
+    return nap;
+}
 const RightSide = () => (
     <>
         <div id="rightSide">
@@ -31,9 +45,6 @@ const RightSide = () => (
                 <Typography variant="h3" >
                     Znak:
                 </Typography>
-
-
-
 
                 <Typography variant="body1" sx={{
                     marginLeft: "40px",
@@ -78,7 +89,7 @@ const RightSide = () => (
                 variant:"caption",
                 fontSize: '.7rem',
             }}>
-            {additionalInformationAboutImgProcesing.maskShape}
+            ksztalt: {additionalInformationAboutImgProcesing.maskShape}
             </Typography>
             <Typography sx={{
                 marginLeft: "40px",
@@ -88,6 +99,15 @@ const RightSide = () => (
             }}>
             {additionalInformationAboutImgProcesing.classifiedType}
             </Typography>
+            <Typography sx={{
+                marginLeft: "40px",
+                marginRight: "40px",
+                variant:"caption",
+                fontSize: '.8rem',
+            }}>
+            {getM(additionalInformationAboutImgProcesing.finalColorClasifaier)}
+            </Typography>
+
         </div>
     </>
 )
