@@ -6,7 +6,7 @@ import React from 'react';
 import { useState } from 'react';
 import { imgS } from '../../paths/pages/HomeP';
 
-import { SendAlert, SendAlertNoSignInDataBase } from './SendAlert';
+import { SendAlert, SendAlertBackendFuckUp, SendAlertNoSignInDataBase } from './SendAlert';
 import { SendAlertNoRecImg } from './SendAlert';
 import LeftSide from './LeftSide';
 import RightSide from './RightSide';
@@ -32,7 +32,7 @@ const style = {
 };
 
 
-function sendImgToBackend(openModal: any, setAlert2: any, setAlert3: any) {
+function sendImgToBackend(openModal: any, setAlert2: any, setAlert3: any,setAlert4:any) {
   const formData = new FormData();
   console.log("send");
   formData.append('userImg', imgS[0].file);
@@ -45,7 +45,7 @@ function sendImgToBackend(openModal: any, setAlert2: any, setAlert3: any) {
       let uid = body.uid;
       console.log(uid);
       retry_geting_feed_back = 0;
-      getImgInfoFromBackedn(openModal, uid, setAlert2, setAlert3);
+      getImgInfoFromBackedn(openModal, uid, setAlert2, setAlert3,setAlert4);
 
     });
   });
@@ -57,7 +57,7 @@ export let additionalInformationAboutImgProcesing: any;
 
 let retry_geting_feed_back: number;
 
-async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any, setAlert3: any) {
+async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any, setAlert3: any,setAlert4:any) {
   const sendToRCla =
   {
     uid
@@ -85,7 +85,7 @@ async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any, s
           console.log(body.info);
           retry_geting_feed_back += 1;
           if (retry_geting_feed_back < 10)
-            getImgInfoFromBackedn(openModal, uid, setAlert2, setAlert3);
+            getImgInfoFromBackedn(openModal, uid, setAlert2, setAlert3,setAlert4);
         }
         else {
           if (index !== -1)
@@ -111,6 +111,7 @@ function SendPhoto() {
   const [openAlert, setAlert] = useState(false);
   const [openAlert2, setAlert2] = useState(false);
   const [openAlert3, setAlert3] = useState(false);
+  const [openAlert4, setAlert4] = useState(false);
 
   const handleOpen = () => {
     // <Alert severity="info">No photo selected pleas select photo</Alert>
@@ -123,7 +124,7 @@ function SendPhoto() {
     }
     else if (imgS.length === 1) {
       setAlert(false);
-      sendImgToBackend(setOpen, setAlert2, setAlert3);
+      sendImgToBackend(setOpen, setAlert2, setAlert3,setAlert4);
     }
   }
   const handleClose = () => setOpen(false);
@@ -149,6 +150,7 @@ function SendPhoto() {
       {SendAlert(openAlert, setAlert)}
       {SendAlertNoRecImg(openAlert2, setAlert2)}
       {SendAlertNoSignInDataBase(openAlert3, setAlert3)}
+      {SendAlertBackendFuckUp(openAlert4, setAlert4)}
     </div>
   )
 }
