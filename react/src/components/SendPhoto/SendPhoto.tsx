@@ -6,7 +6,7 @@ import React from 'react';
 import { useState } from 'react';
 import { imgS } from '../../paths/pages/HomeP';
 
-import { SendAlert, SendAlertBackendFuckUp, SendAlertNoSignInDataBase, SendAlertNotRectangle } from './SendAlert';
+import { SendAlert, SendAlertBackendFuckUp, SendAlertNoSignInDataBase, SendAlertNotRectangle, SendAlertToManyRequest } from './SendAlert';
 import { SendAlertNoRecImg } from './SendAlert';
 import LeftSide from './LeftSide';
 import RightSide from './RightSide';
@@ -32,7 +32,7 @@ const style = {
 };
 
 
-function sendImgToBackend(openModal: any, setAlert2: any, setAlert3: any, setAlert4: any, setAlert5: any) {
+function sendImgToBackend(openModal: any, setAlert2: any, setAlert3: any, setAlert4: any, setAlert5: any, setAlert6: any) {
   let formData = new FormData();
   formData.append('userImg', imgS[0].file);
   console.log("Photo to send");
@@ -42,16 +42,20 @@ function sendImgToBackend(openModal: any, setAlert2: any, setAlert3: any, setAle
     body: formData,
   }).then((response) => {
     response.json().then((body) => {
-      console.log('recive feedback:');
-      console.log(body);
-      if (body.info !== 'File successfully saved')
-        setAlert5(true);
+      if (response.status === 429)
+        setAlert6(true)
       else {
-        let uid = body.uid;
-        console.log(uid);
-        retry_geting_feed_back = 0;
-        getImgInfoFromBackedn(openModal, uid, setAlert2, setAlert3, setAlert4);
+        console.log('recive feedback:');
+        console.log(body);
+        if (body.info !== 'File successfully saved')
+          setAlert5(true);
+        else {
+          let uid = body.uid;
+          console.log(uid);
+          retry_geting_feed_back = 0;
+          getImgInfoFromBackedn(openModal, uid, setAlert2, setAlert3, setAlert4, setAlert6);
 
+        }
       }
     });
   });
@@ -63,7 +67,7 @@ export let additionalInformationAboutImgProcesing: any;
 
 let retry_geting_feed_back: number;
 
-async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any, setAlert3: any, setAlert4: any) {
+async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any, setAlert3: any, setAlert4: any, setAlert6: any) {
   const sendToRCla =
   {
     uid
@@ -80,33 +84,37 @@ async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any, s
     body: jsonString,
   }).then((response) => {
     response.json().then((body) => {
-      // console.log("get fedback")
-      console.log(body);
-      additionalInformationAboutImgProcesing = body;
-      // uid = body.uid;
-      // console.log(uid);
-      if (body.maskShape !== "ZnakShape.UNKNOWN") {
-        index = findIndexOfPhotoName(body.classifiedType);
-        if (body.info) {
-          console.log(body.info);
-          retry_geting_feed_back += 1;
-          if (retry_geting_feed_back < 10)
-            getImgInfoFromBackedn(openModal, uid, setAlert2, setAlert3, setAlert4);
-          else
-            setAlert4(true);
-        }
-        else {
-          if (index !== -1)
-            openModal(true);
-          else
-            setAlert3(true);
-          console.log(body.classifiedType);
-        }
+      if (response.status === 429)
+        setAlert6(true)
+      else {
+        // console.log("get fedback")
+        console.log(body);
+        additionalInformationAboutImgProcesing = body;
+        // uid = body.uid;
+        // console.log(uid);
+        if (body.maskShape !== "ZnakShape.UNKNOWN") {
+          index = findIndexOfPhotoName(body.classifiedType);
+          if (body.info) {
+            console.log(body.info);
+            retry_geting_feed_back += 1;
+            if (retry_geting_feed_back < 10)
+              getImgInfoFromBackedn(openModal, uid, setAlert2, setAlert3, setAlert4, setAlert6);
+            else
+              setAlert4(true);
+          }
+          else {
+            if (index !== -1)
+              openModal(true);
+            else
+              setAlert3(true);
+            console.log(body.classifiedType);
+          }
 
-        setAlert2(false);
+          setAlert2(false);
+        }
+        else
+          setAlert2(true);
       }
-      else
-        setAlert2(true);
     });
   });
 }
@@ -118,6 +126,7 @@ function SendPhoto() {
   const [openAlert3, setAlert3] = useState(false);
   const [openAlert4, setAlert4] = useState(false);
   const [openAlert5, setAlert5] = useState(false);
+  const [openAlert6, setAlert6] = useState(false);
 
   const handleOpen = () => {
     // <Alert severity="info">No photo selected pleas select photo</Alert>
@@ -128,7 +137,7 @@ function SendPhoto() {
     }
     else if (imgS.length === 1) {
       setAlert(false);
-      sendImgToBackend(setOpen, setAlert2, setAlert3, setAlert4, setAlert5);
+      sendImgToBackend(setOpen, setAlert2, setAlert3, setAlert4, setAlert5, setAlert6);
     }
   }
   const handleClose = () => setOpen(false);
@@ -156,6 +165,8 @@ function SendPhoto() {
       {SendAlertNoSignInDataBase(openAlert3, setAlert3)}
       {SendAlertBackendFuckUp(openAlert4, setAlert4)}
       {SendAlertNotRectangle(openAlert5, setAlert5)}
+      {SendAlertToManyRequest(openAlert6, setAlert6)}
+
     </div>
   )
 }
