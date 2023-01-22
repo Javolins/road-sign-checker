@@ -41,7 +41,7 @@ def getCircularity(contour):
 def getEllipsisity(contour):
     area = cv2.contourArea(contour)
     (x, y), (MA, ma), angle = cv2.fitEllipse(contour)
-    ellipseArea = math.PI * MA * ma
+    ellipseArea = math.pi * MA * ma
     ellipsisity = area/ellipseArea
     return ellipsisity
 
