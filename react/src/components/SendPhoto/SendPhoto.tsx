@@ -42,6 +42,8 @@ function sendImgToBackend(openModal: any, setAlert2: any, setAlert3: any, setAle
     body: formData,
   }).then((response) => {
     response.json().then((body) => {
+      console.log("response");
+      console.log(response.status);
       if (response.status === 429)
         setAlert6(true)
       else {
@@ -84,6 +86,8 @@ async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any, s
     body: jsonString,
   }).then((response) => {
     response.json().then((body) => {
+      console.log("response");
+      console.log(response.status);
       if (response.status === 429)
         setAlert6(true)
       else {

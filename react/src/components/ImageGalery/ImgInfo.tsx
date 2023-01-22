@@ -215,7 +215,12 @@ export var itemData = [
         info: 'Zakaz wyprzedzania przez samochody ciężarowe  Zabrania wyprzedzania pojazdów silnikowych wielośladowych kierującemu: 1) samochodem ciężarowym o dopuszczalnej masie całkowitej przekraczającej 3,5 t, 2) ciągnikiem samochodowym, 3) pojazdem specjalnym lub używanym do celów specjalnych - o dopuszczalnej masie całkowitej przekraczającej 3,5 t. Jeżeli zakaz wyrażony przez znak B-25 nie jest uprzednio odwołany znakiem B-28 lub B-42, to obowiązuje do najbliższego skrzyżowania.',
     },
 
-   
+    {
+        typ: 'Zakazu',
+        title: 'B-29',
+        img: " https://znaki-drogowe.pl/img/zakazu/B-29-zakaz-uzywania-sygnalow-dzwiekowych.png",
+        info: 'Zabrania używania tych sygnałów, chyba że jest to konieczne w celu ostrzeżenia o bezpośrednim zagrożeniu bezpieczeństwa ruchu. Jeżeli zakaz wyrażony przez znak B-29 nie jest uprzednio odwołany znakiem B-30 lub B-42, to obowiązuje do najbliższego skrzyżowania',
+    },
     {
         typ: 'Zakazu',
         title: 'B-31',
