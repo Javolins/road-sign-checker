@@ -32,7 +32,7 @@ const style = {
 };
 
 
-function sendImgToBackend(openModal: any, setAlert2: any,setAlert3:any) {
+function sendImgToBackend(openModal: any, setAlert2: any, setAlert3: any) {
   const formData = new FormData();
   console.log("send");
   formData.append('userImg', imgS[0].file);
@@ -44,7 +44,8 @@ function sendImgToBackend(openModal: any, setAlert2: any,setAlert3:any) {
     response.json().then((body) => {
       let uid = body.uid;
       console.log(uid);
-      getImgInfoFromBackedn(openModal, uid, setAlert2,setAlert3);
+      retry_geting_feed_back = 0;
+      getImgInfoFromBackedn(openModal, uid, setAlert2, setAlert3);
 
     });
   });
@@ -54,7 +55,9 @@ const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 export let additionalInformationAboutImgProcesing: any;
 
-async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any,setAlert3:any) {
+let retry_geting_feed_back: number;
+
+async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any, setAlert3: any) {
   const sendToRCla =
   {
     uid
@@ -78,11 +81,19 @@ async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any,se
       // console.log(uid);
       if (body.maskShape !== "ZnakShape.UNKNOWN") {
         index = findIndexOfPhotoName(body.classifiedType);
-        if(index !== -1)
-          openModal(true);
-        else 
-          setAlert3(true);
+        if (body.info) {
+          console.log(body.info);
+          retry_geting_feed_back += 1;
+          if (retry_geting_feed_back < 15)
+            getImgInfoFromBackedn(openModal, uid, setAlert2, setAlert3);
+        }
+        else {
+          if (index !== -1)
+            openModal(true);
+          else
+            setAlert3(true);
           console.log(body.classifiedType);
+        }
 
         setAlert2(false);
       }
@@ -112,7 +123,7 @@ function SendPhoto() {
     }
     else if (imgS.length === 1) {
       setAlert(false);
-      sendImgToBackend(setOpen, setAlert2,setAlert3);
+      sendImgToBackend(setOpen, setAlert2, setAlert3);
     }
   }
   const handleClose = () => setOpen(false);
@@ -144,7 +155,7 @@ function SendPhoto() {
 export default SendPhoto
 function findIndexOfPhotoName(name: any): any {
   // throw new Error('Function not implemented.');
-  const isname = (el:any)=> el.title ===name;
+  const isname = (el: any) => el.title === name;
   const k = itemData.findIndex(isname);
   console.log(k);
   return k;
