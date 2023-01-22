@@ -12,34 +12,44 @@ from fastai.vision.all import *
 
 from nnpaths import SignsNeuralNetworkPathBuilers
 
-def learnNNForSpecificSignType(datasetDirPath, modelName, epochs):
-    #@return path to trained model
-    pathBuilder = SignsNeuralNetworkPathBuilers()
-    learnerOutputDirPath = pathBuilder.getLearnerDirPath(modelName)
+class LearningResult:
+    def __init__(self, dls, learner, modelPath):
+        self.dls = dls
+        self.model = learner
+        self.modelPath = modelPath
 
-    if not os.path.exists(learnerOutputDirPath):
-        os.makedirs(learnerOutputDirPath)
+class SpecificSignTypeLearner:
+    def __init__(self, datasetDirPath, modelName, sampleRepeats):
+        self.datasetDirPath = datasetDirPath
+        pathBuilder = SignsNeuralNetworkPathBuilers()
+        self.modelPath = pathBuilder.getModelPath(modelName)
 
-    znakiFiles = get_image_files(datasetDirPath)
+        learnerOutputDirPath = pathBuilder.getLearnerDirPath(modelName)
 
-    labels_pattern = r'([A-Z]-\d+[a-z]?)_(\d+).\w+'
-    rgxp = re.compile(labels_pattern)
-    rgxp.match(znakiFiles[0].name)
+        if not os.path.exists(learnerOutputDirPath):
+            os.makedirs(learnerOutputDirPath)
 
-    dls = ImageDataLoaders.from_name_re(learnerOutputDirPath, znakiFiles, labels_pattern, bs=4, item_tfms=Resize(90),
-                                        batch_tfms=aug_transforms(do_flip=False))
+        znakiFiles = get_image_files(datasetDirPath)
+        filesLen = len(znakiFiles)
+        znakiPaths = []
+        for i in range(sampleRepeats):
+            for j in range(filesLen):
+                znakiPaths.append(znakiFiles[j])
 
-    learn = vision_learner(dls, resnet18, metrics=error_rate)
-    learn.lr_find()
+        labels_pattern = r'([A-Z]-\d+[a-z]?)_(\d+).\w+'
+        rgxp = re.compile(labels_pattern)
+        rgxp.match(znakiFiles[0].name)
 
-    epochs = 20
-    learn.fine_tune(epochs)
+        self.dls = ImageDataLoaders.from_name_re(learnerOutputDirPath, znakiPaths, labels_pattern, shuffle=True, bs=4,
+                                            item_tfms=Resize(90),
+                                            batch_tfms=aug_transforms(do_flip=False))
 
-    modelPath = pathBuilder.getModelPath(modelName)
-    learn.export(modelPath)
+        self.model = vision_learner(self.dls, resnet18, metrics=error_rate)
+        self.model.lr_find()
 
-    return modelPath
-
+    def tuneModel(self, additionalEpochs):
+        self.model.fine_tune(additionalEpochs)
+        self.model.export(self.modelPath)
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
@@ -61,4 +71,5 @@ if __name__ == '__main__':
     pathBuilder = SignsNeuralNetworkPathBuilers()
     preprocessedDatasetDirPath = pathBuilder.getPreprocessedDatasetDirPath(signSubsetName)
 
-    learnNNForSpecificSignType(preprocessedDatasetDirPath, signSubsetName, epochs)
+    learner = SpecificSignTypeLearner(preprocessedDatasetDirPath, signSubsetName)
+    learner.tuneModel(epochs)
