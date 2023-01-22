@@ -50,6 +50,13 @@ def getEllipsisityDeviation(contour):
     deviation = abs(1.0 - ellipsisity)
     return deviation
 
+def getRectangularity(contour):
+    area = cv2.contourArea(contour)
+    boundingRectSize = ImageSize.createFromMask(contour)
+    rectArea = boundingRectSize.width * boundingRectSize.height
+    rectangularity = area/rectArea
+    return rectangularity
+
 def getMaskContour(mask):
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     mainContour = max(contours, key = cv2.contourArea)
@@ -67,11 +74,18 @@ def getZnakCircularity(znakImage):
 
     return circularity
 
-def getNumberOfVertices(mainContour, imageSize, EPSILON_PERCENTAGE = 0.024):
+def getPolygonEpsilonBasedOnImageSize(imageSize, EPSILON_PERCENTAGE):
     imageDiagonalLength = np.sqrt(imageSize.width ** 2 + imageSize.height ** 2)
     polygonApproximationEpsilon = EPSILON_PERCENTAGE * imageDiagonalLength
-    contoursSharpened = cv2.approxPolyDP(mainContour, polygonApproximationEpsilon, True)
-    numberOfVertices = len(contoursSharpened)
+    return polygonApproximationEpsilon
+def getSimplifiedShape(mainContour, polygonApproximationEpsilon):
+    simplifiedShape = cv2.approxPolyDP(mainContour, polygonApproximationEpsilon, True)
+    return simplifiedShape
+
+def getNumberOfVertices(mainContour, imageSize, EPSILON_PERCENTAGE = 0.0095):
+    polygonApproximationEpsilon = getPolygonEpsilonBasedOnImageSize(imageSize, EPSILON_PERCENTAGE)
+    simplifiedShape = getSimplifiedShape(mainContour, polygonApproximationEpsilon)
+    numberOfVertices = len(simplifiedShape)
     return numberOfVertices
 
 class ImageSize:
@@ -84,41 +98,46 @@ class ImageSize:
         size = ImageSize(openCVImage.shape[1], openCVImage.shape[0])
         return size
 
+    def createFromMask(maskContour):
+        rect = cv2.minAreaRect(maskContour)
+        boundingRectSize = ImageSize(rect[1][0], rect[1][1])
+        return boundingRectSize
+
 def isContourElliptic(contour):
-    ELLIPSE_DEVIATION_THRESHOLD = 0.01
+    ELLIPSE_DEVIATION_THRESHOLD = 0.0125
     ellipsisityDeviation = getEllipsisityDeviation(contour)
     isElliptic = ellipsisityDeviation <= ELLIPSE_DEVIATION_THRESHOLD
     return isElliptic
 
-def getShape(contour, imageSize):
+def getShape(contour, maskSize):
     #contour - first element exctracted from cv2.findContours
-    isNotElliptic = not isContourElliptic(contour)
-    if isNotElliptic:
-        ellipsistyDeviation = getEllipsisityDeviation(contour)
-        if ellipsistyDeviation < 1.4:
-            numberOfVertices = getNumberOfVertices(contour, imageSize)
-            if numberOfVertices == 3:
-                return ZnakShape.TRIANGLE
-            elif numberOfVertices == 4:
+    TRIANGLE_RECTANGULARITY_THRESHOLD = 0.6
+    rectangularity = getRectangularity(contour)
+    if rectangularity > TRIANGLE_RECTANGULARITY_THRESHOLD:
+        numberOfVertices = getNumberOfVertices(contour, maskSize)
+        if isContourElliptic(contour):
+            # octagon under angle may undergo as circle
+            if numberOfVertices != 8:
+                return ZnakShape.CIRCLE
+            else:
+                return ZnakShape.OCTAGON
+        elif rectangularity > 0.9:
+            return ZnakShape.RECTANGLE
+        else:
+            if numberOfVertices == 4:
                 return ZnakShape.RECTANGLE
             elif numberOfVertices == 8:
                 return ZnakShape.OCTAGON
             else:
                 return ZnakShape.UNKNOWN
-        else:
-            #triangles cannot fit ellipse properly
-            return ZnakShape.TRIANGLE
     else:
-        #octagon under angle may undergo as circle
-        numberOfVertices = getNumberOfVertices(contour, imageSize)
-        if numberOfVertices != 8:
-            return ZnakShape.CIRCLE
-        else:
-            return ZnakShape.OCTAGON
+        return ZnakShape.TRIANGLE
+
+
 
 def getMaskShape(mask):
     #@param mask binary image where white represents shape and black background
     maskContour = getMaskContour(mask)
-    imageSize = ImageSize.createFromOpenCVImage(mask)
-    shape = getShape(maskContour, imageSize)
+    maskSize = ImageSize.createFromMask(maskContour)
+    shape = getShape(maskContour, maskSize)
     return shape
