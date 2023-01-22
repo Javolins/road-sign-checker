@@ -4,18 +4,7 @@ import { itemData } from '../ImageGalery';
 import { additionalInformationAboutImgProcesing, index } from './SendPhoto';
 
 
-function getM(arr : any) 
-{
-            const index2 = arr.indexOf(Math.max(...arr));
-    let nap ="na podstawie koloru otrzymano typ:";
-    if(index2 ==0)
-        nap+="Ostrzegawcze";
-    if(index2 ==1)
-        nap+="Zakazu";
-    if(index2 ==2)
-        nap+="Nakazu/Informacyjne";
-    return nap;
-}
+
 const RightSide = () => (
     <>
         <div id="rightSide">
@@ -83,22 +72,7 @@ const RightSide = () => (
             }}>
             C: {Math.floor(additionalInformationAboutImgProcesing.finalColorClasifaier[2]*10000)/100}%
             </Typography>
-            <Typography sx={{
-                marginLeft: "40px",
-                marginRight: "40px",
-                variant:"caption",
-                fontSize: '.7rem',
-            }}>
-            ksztalt: {additionalInformationAboutImgProcesing.maskShape}
-            </Typography>
-            <Typography sx={{
-                marginLeft: "40px",
-                marginRight: "40px",
-                variant:"caption",
-                fontSize: '.8rem',
-            }}>
-            {getM(additionalInformationAboutImgProcesing.finalColorClasifaier)}
-            </Typography>
+
 
         </div>
     </>
