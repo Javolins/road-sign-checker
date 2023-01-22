@@ -64,8 +64,9 @@ def pipeline(uid, deletePhotos):
         json.dump(info, outfile)
     
     print(info)
-    os.remove(filepath_img)
-    os.remove(filepath_mask)
+    if deletePhotos:
+        os.remove(filepath_img)
+        os.remove(filepath_mask)
     #TODO
 
 @app.route('/')
