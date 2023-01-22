@@ -95,14 +95,6 @@ const RightSide = () => (
                 marginLeft: "40px",
                 marginRight: "40px",
                 variant:"caption",
-                fontSize: '.7rem',
-            }}>
-            {additionalInformationAboutImgProcesing.classifiedType}
-            </Typography>
-            <Typography sx={{
-                marginLeft: "40px",
-                marginRight: "40px",
-                variant:"caption",
                 fontSize: '.8rem',
             }}>
             {getM(additionalInformationAboutImgProcesing.finalColorClasifaier)}
