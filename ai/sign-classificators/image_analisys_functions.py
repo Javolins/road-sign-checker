@@ -12,6 +12,10 @@ class ZnakShape(Enum):
     UNKNOWN = 10
 
 
+def expandImageToThreeLayers(oneLayerImage):
+    expanded = oneLayerImage[:, :, np.newaxis].repeat(3, 2)
+    return expanded
+
 def binarizeToExtractShapeMask(image):
     imageGray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 
@@ -38,16 +42,17 @@ def getCircularity(contour):
     circularity = (4 * np.pi * area) / (perimeter ** 2)
     return circularity
 
-def getEllipsisity(contour):
+def getEllipsisityDeviation(contour):
     area = cv2.contourArea(contour)
     (x, y), (MA, ma), angle = cv2.fitEllipse(contour)
     ellipseArea = math.pi * MA * ma
-    ellipsisity = area/ellipseArea
-    return ellipsisity
+    ellipsisity = 4*area/ellipseArea
+    deviation = abs(1.0 - ellipsisity)
+    return deviation
 
 def getMaskContour(mask):
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    mainContour = contours[0]
+    mainContour = max(contours, key = cv2.contourArea)
     return mainContour
 def getZnakContour(znakImage):
     #assert znakImage is valid object returned by cv2.imread
@@ -80,14 +85,16 @@ class ImageSize:
         size = ImageSize(openCVImage.shape[1], openCVImage.shape[0])
         return size
 
+def isContourElliptic(contour):
+    ELLIPSE_DEVIATION_THRESHOLD = 0.05
+    ellipsisityDeviation = getEllipsisityDeviation(contour)
+    isElliptic = ellipsisityDeviation <= ELLIPSE_DEVIATION_THRESHOLD
+    return isElliptic
+
 def getShape(contour, imageSize):
     #contour - first element exctracted from cv2.findContours
-    ellipsisity = getEllipsisity(contour)
-
-    ELLIPSE_THRESHOLD = 0.95
-    isNotCircle = ellipsisity < ELLIPSE_THRESHOLD
-
-    if isNotCircle:
+    isNotElliptic = not isContourElliptic(contour)
+    if isNotElliptic:
         numberOfVertices = getNumberOfVertices(contour, imageSize)
         if numberOfVertices == 3:
             return ZnakShape.TRIANGLE
