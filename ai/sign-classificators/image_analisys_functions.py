@@ -67,9 +67,8 @@ def getZnakCircularity(znakImage):
 
     return circularity
 
-def getNumberOfVertices(mainContour, imageSize):
+def getNumberOfVertices(mainContour, imageSize, EPSILON_PERCENTAGE = 0.024):
     imageDiagonalLength = np.sqrt(imageSize.width ** 2 + imageSize.height ** 2)
-    EPSILON_PERCENTAGE = 0.07
     polygonApproximationEpsilon = EPSILON_PERCENTAGE * imageDiagonalLength
     contoursSharpened = cv2.approxPolyDP(mainContour, polygonApproximationEpsilon, True)
     numberOfVertices = len(contoursSharpened)
@@ -86,7 +85,7 @@ class ImageSize:
         return size
 
 def isContourElliptic(contour):
-    ELLIPSE_DEVIATION_THRESHOLD = 0.05
+    ELLIPSE_DEVIATION_THRESHOLD = 0.01
     ellipsisityDeviation = getEllipsisityDeviation(contour)
     isElliptic = ellipsisityDeviation <= ELLIPSE_DEVIATION_THRESHOLD
     return isElliptic
@@ -95,17 +94,27 @@ def getShape(contour, imageSize):
     #contour - first element exctracted from cv2.findContours
     isNotElliptic = not isContourElliptic(contour)
     if isNotElliptic:
-        numberOfVertices = getNumberOfVertices(contour, imageSize)
-        if numberOfVertices == 3:
-            return ZnakShape.TRIANGLE
-        elif numberOfVertices == 4:
-            return ZnakShape.RECTANGLE
-        elif numberOfVertices == 8:
-            return ZnakShape.OCTAGON
+        ellipsistyDeviation = getEllipsisityDeviation(contour)
+        if ellipsistyDeviation < 1.4:
+            numberOfVertices = getNumberOfVertices(contour, imageSize)
+            if numberOfVertices == 3:
+                return ZnakShape.TRIANGLE
+            elif numberOfVertices == 4:
+                return ZnakShape.RECTANGLE
+            elif numberOfVertices == 8:
+                return ZnakShape.OCTAGON
+            else:
+                return ZnakShape.UNKNOWN
         else:
-            return ZnakShape.UNKNOWN
+            #triangles cannot fit ellipse properly
+            return ZnakShape.TRIANGLE
     else:
-        return ZnakShape.CIRCLE
+        #octagon under angle may undergo as circle
+        numberOfVertices = getNumberOfVertices(contour, imageSize)
+        if numberOfVertices != 8:
+            return ZnakShape.CIRCLE
+        else:
+            return ZnakShape.OCTAGON
 
 def getMaskShape(mask):
     #@param mask binary image where white represents shape and black background
