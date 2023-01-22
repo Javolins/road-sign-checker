@@ -9,6 +9,7 @@ from time import sleep
 import cv2
 import json
 import pathlib
+import numpy
 
 from matplotlib import pyplot as plt
 
@@ -87,11 +88,15 @@ def upload():
     uid = str(uuid.uuid4())
         
     file = request.files['userImg']
-    print(file)
     filename = secure_filename(uid+'.jpg')
     destination="/".join([app.config['UPLOAD_FOLDER'], filename])
     file.save(destination)
     
+    image_size = numpy.shape(ci.readImageAsRGB(destination))
+    if image_size[0] != image_size[1]:
+        os.remove(destination)
+        return jsonify({"info":"Image is not a square!"})
+        
     thread = Thread(target=pipeline, kwargs={"uid":uid,"deletePhotos":True})
     thread.start()
     
