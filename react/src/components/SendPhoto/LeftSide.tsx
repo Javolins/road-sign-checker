@@ -32,7 +32,7 @@ const LeftSide = () => (
             </section>
             <section>
                 <b>Typ:</b>
-                <p>{itemData[index].typ}</p>
+                <p>{itemData[index].title}</p>
             </section>           
         </div>
     </div>
