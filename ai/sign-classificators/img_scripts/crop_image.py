@@ -37,8 +37,9 @@ def readImageAsHSV(filename):
 
 
 def getParametersFromImage(HSV_image):
-    image_size = np.shape(HSV_image)[0]
-    return image_size
+    y_size = np.shape(HSV_image)[0]
+    x_size = np.shape(HSV_image)[0]
+    return (x_size, y_size)
 
 
 def getMeanHSV(HSV_list):
@@ -71,16 +72,17 @@ def getStdHSV(HSV_list):
 
 def findMainColor(HSV_image):
     image_size = getParametersFromImage(HSV_image)
-    middle_px = image_size // 2
+    x_middle_px = image_size[0] // 2
+    y_middle_px = image_size[1] // 2
     counter = 0
     distance = 0
     hsv_list = []
     # collect colorful(non-black and non-white) pixels starting from center
     # procedure iterates through wider and wider squares until a certain amount is collected
     while (counter < COLORFUL_PIXELS_REQUIRED):
-        for i in range(middle_px - distance, middle_px + distance + 1):
-            for j in range(middle_px - distance, middle_px + distance + 1):
-                if isEdge(i, j, middle_px, distance) and isColorful(HSV_image[i][j]):
+        for i in range(x_middle_px - distance, x_middle_px + distance + 1):
+            for j in range(y_middle_px - distance, y_middle_px + distance + 1):
+                if isEdge(i, j, image_size, distance) and isColorful(HSV_image[i][j]):
                     counter += 1
                     hsv_list.append(HSV_image[i][j])
         distance += 1
@@ -101,7 +103,7 @@ def findMainColor(HSV_image):
 
 
 def isEdge(x, y, middle, distance):
-    return x == middle - distance or y == middle - distance or x == middle + distance or y == middle + distance
+    return x == middle[0] - distance or y == middle[1] - distance or x == middle[0] + distance or y == middle[1] + distance
 
 
 def isColorful(HSV_value):
