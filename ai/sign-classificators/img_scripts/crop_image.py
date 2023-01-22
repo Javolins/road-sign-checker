@@ -235,6 +235,13 @@ def getSignFromImage(filename):
     mask_with_border = getFinalMask(HSV_image, inside_mask)
     return applyMask(readImageAsRGB(filename), mask_with_border)
 
+def getFinalMaskFromBGRImage(BGRImage):
+    HSV_image = cv2.cvtColor(BGRImage, cv2.COLOR_BGR2HSV)
+    HSV_mean = findMainColor(HSV_image)
+    inside_mask = getInsideMask(HSV_image, HSV_mean)
+    finalMask = getFinalMask(HSV_image, inside_mask)
+    return finalMask
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
