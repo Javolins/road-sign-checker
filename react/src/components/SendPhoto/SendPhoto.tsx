@@ -44,7 +44,9 @@ function sendImgToBackend(openModal: any, setAlert2: any, setAlert3: any, setAle
     response.json().then((body) => {
       console.log("response");
       console.log(response.status);
-      if (response.status === 429)
+
+      
+      if (response.status !== 200)
         setAlert6(true)
       else {
         console.log('recive feedback:');
@@ -59,7 +61,9 @@ function sendImgToBackend(openModal: any, setAlert2: any, setAlert3: any, setAle
 
         }
       }
-    });
+    },function(error:any) {
+      setAlert6(true);
+  });
   });
 }
 
@@ -88,7 +92,7 @@ async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any, s
     response.json().then((body) => {
       console.log("response");
       console.log(response.status);
-      if (response.status === 429)
+      if (response.status !== 200)
         setAlert6(true)
       else {
         // console.log("get fedback")
@@ -119,7 +123,9 @@ async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any, s
         else
           setAlert2(true);
       }
-    });
+    },function(error:any) {
+      setAlert6(true);
+  });
   });
 }
 

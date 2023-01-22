@@ -53,13 +53,7 @@ export var itemData = [
         img: 'https://znaki-drogowe.pl/img/ostrzegawcze/A-6cskrzyzowanie-z-droga-podporzadkowana-wystepujaca-po-lewej-stronie.png',
         info: 'Skrzyżowanie z drogą podporządkowaną występującą po lewej stronie Ostrzega o skrzyżowaniu z drogą podporządkowaną, występującą po stronie lewej. Umieszczona pod znakiem tabliczka T-6b wskazuje układ dróg na skrzyżowaniu. Gruba linia na znakach i tabliczkach oznacza drogę z pierwszeństwem.',
     },
-
-    {
-        typ: 'Ostrzegawczy',
-        title: 'A-6c',
-        img: 'https://znaki-drogowe.pl/img/ostrzegawcze/A-6cskrzyzowanie-z-droga-podporzadkowana-wystepujaca-po-lewej-stronie.png',
-        info: 'Skrzyżowanie z drogą podporządkowaną występującą po lewej stronie Ostrzega o skrzyżowaniu z drogą podporządkowaną, występującą po stronie lewej. Umieszczona pod znakiem tabliczka T-6b wskazuje układ dróg na skrzyżowaniu. Gruba linia na znakach i tabliczkach oznacza drogę z pierwszeństwem.',
-    },
+    
     {
         typ: 'Ostrzegawczy',
         title: 'A-6d',
@@ -207,13 +201,7 @@ export var itemData = [
         img: " https://znaki-drogowe.pl/img/zakazu/B-25-zakaz-wyprzedzania.png",
         info: 'Zakaz wyprzedzania  Zabrania kierującym pojazdami silnikowymi wyprzedzania pojazdów silnikowych wielośladowych. Umieszczona pod znakiem B-25 tabliczka od T-23a do T-23j wskazuje, że zakaz wyprzedzania dotyczy kierującego pojazdem, którego symbol znajduje się na tabliczce. Jeżeli zakaz wyrażony przez znak B-25 nie jest uprzednio odwołany znakiem B-27 lub B-42, to obowiązuje do najbliższego skrzyżowania.',
     },
-
-    {
-        typ: 'Zakazu',
-        title: 'B-26',
-        img: " https://znaki-drogowe.pl/img/zakazu/B-26-zakaz-wyprzedzania-przez-samochody-ciezarowe.png",
-        info: 'Zakaz wyprzedzania przez samochody ciężarowe  Zabrania wyprzedzania pojazdów silnikowych wielośladowych kierującemu: 1) samochodem ciężarowym o dopuszczalnej masie całkowitej przekraczającej 3,5 t, 2) ciągnikiem samochodowym, 3) pojazdem specjalnym lub używanym do celów specjalnych - o dopuszczalnej masie całkowitej przekraczającej 3,5 t. Jeżeli zakaz wyrażony przez znak B-25 nie jest uprzednio odwołany znakiem B-28 lub B-42, to obowiązuje do najbliższego skrzyżowania.',
-    },
+  
 
     {
         typ: 'Zakazu',
@@ -290,18 +278,7 @@ export var itemData = [
         img: 'https://znaki-drogowe.pl/img/nakazu/C-9-nakaz-jazdy-z-prawej-strony-znaku.png',
         info: 'Nakaz jazdy z prawej strony znaku	 Zobowiązuje kierującego do jazdy z prawej strony znaku; znak ten może być umieszczony na przedłużeniu osi drogi (jezdni) lub na samej jezdni. Znak obowiązuje na najbliższym skrzyżowaniu lub w miejscu, gdzie występuje możliwość zmiany kierunku jazdy'
     },
-    {
-        typ: 'Nakazu',
-        title: 'C-10',
-        img: 'https://znaki-drogowe.pl/img/nakazu/C-10-nakaz-jazdy-z-lewej-strony-znaku.png',
-        info: 'Nakaz jazdy z lewej strony znaku	 Zobowiązuje kierującego do jazdy z lewej strony znaku; znak ten może być umieszczony na przedłużeniu osi drogi (jezdni) lub na samej jezdni. Znak obowiązuje na najbliższym skrzyżowaniu lub w miejscu, gdzie występuje możliwość zmiany kierunku jazdy'
-    },
-    {
-        typ: 'Nakazu',
-        title: 'C-11',
-        img: 'https://znaki-drogowe.pl/img/nakazu/C-11-nakaz-jazdy-z-prawej-lub-lewej-strony-znaku.png',
-        info: 'Nakaz jazdy z prawej lub z lewej strony znaku	 Zobowiązuje kierującego do jazdy z prawej lub z lewej strony znaku; znak ten może być umieszczony na przedłużeniu osi drogi (jezdni) lub na samej jezdni. Znak obowiązuje na najbliższym skrzyżowaniu lub w miejscu, gdzie występuje możliwość zmiany kierunku jazdy'
-    },
+    
     {
         typ: 'Nakazu',
         title: 'C-12',
