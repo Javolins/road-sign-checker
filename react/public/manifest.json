@@ -1,0 +1,21 @@
+{
+  "short_name": "Sign Recogniser",
+  "name": "Road Sign Recogniser",
+  "icons": [
+    {
+      "src": "Road-sign-recognizer-icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "Road-sign-recognizer-icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./Home",
+  "homepage_url": "https://roadsigns.p4m1.top/Home",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
