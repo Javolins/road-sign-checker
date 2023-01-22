@@ -21,13 +21,12 @@ const Sidebar = ({ children }: SidebarProps) => {
         <Box sx={{ display: "flex", gap: "0.25rem" }} component="header">
           <LinkRute to="/Home">
             <img src="/Road-sign-recognizer-icon.png" alt="Road sign recognizer icon" width={50} height={50} />
-            <img src="/Road-sign-recognizer-logo-text.svg" alt="Road sign recognizer" />
+            Road sign recognizer 
           </LinkRute>
         </Box>
         {children}
       </Box>
       <SendPhoto/>
-
     </Box>
 
   )

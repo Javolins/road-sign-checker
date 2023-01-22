@@ -4,6 +4,7 @@ import AppLayout from "./components/AppLayout";
 import { paths, pathsHome } from "./paths"
 
 function App() {
+  {document.title = "Roda sign recognizer"}
   return (
     <Routes>
       <Route path="/" element={<AppLayout />}>

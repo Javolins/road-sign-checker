@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import { Button } from "@mui/material";
 
-export var imgS:any ;
+export var imgS:any=null ;
 
 const HomeP = () => {
 
