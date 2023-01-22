@@ -80,6 +80,14 @@ const RightSide = () => (
             }}>
             {additionalInformationAboutImgProcesing.maskShape}
             </Typography>
+            <Typography sx={{
+                marginLeft: "40px",
+                marginRight: "40px",
+                variant:"caption",
+                fontSize: '.7rem',
+            }}>
+            {additionalInformationAboutImgProcesing.classifiedType}
+            </Typography>
         </div>
     </>
 )

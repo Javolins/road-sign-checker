@@ -6,11 +6,13 @@ import React from 'react';
 import { useState } from 'react';
 import { imgS } from '../../paths/pages/HomeP';
 
-import SendAlert from './SendAlert';
+import { SendAlert, SendAlertNoSignInDataBase } from './SendAlert';
+import { SendAlertNoRecImg } from './SendAlert';
 import LeftSide from './LeftSide';
 import RightSide from './RightSide';
+import { itemData } from '../ImageGalery/ImgInfo';
 
-export const index: number = 0;
+export let index: number = 0;
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -30,7 +32,7 @@ const style = {
 };
 
 
-function sendImgToBackend(openModal: any) {
+function sendImgToBackend(openModal: any, setAlert2: any,setAlert3:any) {
   const formData = new FormData();
   console.log("send");
   formData.append('userImg', imgS[0].file);
@@ -42,7 +44,7 @@ function sendImgToBackend(openModal: any) {
     response.json().then((body) => {
       let uid = body.uid;
       console.log(uid);
-      getImgInfoFromBackedn(openModal, uid);
+      getImgInfoFromBackedn(openModal, uid, setAlert2,setAlert3);
 
     });
   });
@@ -50,9 +52,9 @@ function sendImgToBackend(openModal: any) {
 
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
-export let additionalInformationAboutImgProcesing:any;
+export let additionalInformationAboutImgProcesing: any;
 
-async function getImgInfoFromBackedn(openModal: any, uid: any) {
+async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any,setAlert3:any) {
   const sendToRCla =
   {
     uid
@@ -74,7 +76,18 @@ async function getImgInfoFromBackedn(openModal: any, uid: any) {
       additionalInformationAboutImgProcesing = body;
       // uid = body.uid;
       // console.log(uid);
-      openModal(true);
+      if (body.maskShape !== "ZnakShape.UNKNOWN") {
+        index = findIndexOfPhotoName(body.classifiedType);
+        if(index !== -1)
+          openModal(true);
+        else 
+          setAlert3(true);
+          console.log(body.classifiedType);
+
+        setAlert2(false);
+      }
+      else
+        setAlert2(true);
     });
   });
 }
@@ -85,9 +98,11 @@ var isNoPhotoSelected = false;
 function SendPhoto() {
   const [open, setOpen] = useState(false);
   const [openAlert, setAlert] = useState(false);
+  const [openAlert2, setAlert2] = useState(false);
+  const [openAlert3, setAlert3] = useState(false);
 
   const handleOpen = () => {
-    <Alert severity="info">No photo selected pleas select photo</Alert>
+    // <Alert severity="info">No photo selected pleas select photo</Alert>
 
     if (imgS === null || imgS.length === 0) {
       isNoPhotoSelected = true
@@ -96,8 +111,8 @@ function SendPhoto() {
       setAlert(true);
     }
     else if (imgS.length === 1) {
-      sendImgToBackend(setOpen);
       setAlert(false);
+      sendImgToBackend(setOpen, setAlert2,setAlert3);
     }
   }
   const handleClose = () => setOpen(false);
@@ -121,7 +136,17 @@ function SendPhoto() {
         </Box>
       </Modal>
       {SendAlert(openAlert, setAlert)}
+      {SendAlertNoRecImg(openAlert2, setAlert2)}
+      {SendAlertNoSignInDataBase(openAlert3, setAlert3)}
     </div>
   )
 }
 export default SendPhoto
+function findIndexOfPhotoName(name: any): any {
+  // throw new Error('Function not implemented.');
+  const isname = (el:any)=> el.title ===name;
+  const k = itemData.findIndex(isname);
+  console.log(k);
+  return k;
+}
+
