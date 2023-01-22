@@ -86,6 +86,8 @@ async function getImgInfoFromBackedn(openModal: any, uid: any, setAlert2: any, s
           retry_geting_feed_back += 1;
           if (retry_geting_feed_back < 10)
             getImgInfoFromBackedn(openModal, uid, setAlert2, setAlert3,setAlert4);
+            else
+          setAlert4(true);
         }
         else {
           if (index !== -1)
