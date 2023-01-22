@@ -143,7 +143,7 @@ export var itemData = [
     {
         typ: 'Ostrzegawczy',
         title: 'A-20',
-        img: 'A-20-odcinek-jezdni-o-ruchu-dwukierunkowym.png',
+        img: 'https://znaki-drogowe.pl/img/ostrzegawcze/A-20-odcinek-jezdni-o-ruchu-dwukierunkowym.png',
         info: 'Ostrzega jadących jezdnią jednokierunkową o miejscu, w którym rozpoczyna się ruch dwukierunkowy',
     },  
     {
@@ -366,7 +366,7 @@ export var itemData = [
     {
         typ: 'Informacyjny',
         title: 'D-4a',
-        img: 'D-4a-droga-bez-przejazdu.png',
+        img: 'https://znaki-drogowe.pl/img/informacyjne/D-4a-droga-bez-przejazdu.png',
         info: 'Oznacza początek drogi bez przejazdu.',
     },
     // {
