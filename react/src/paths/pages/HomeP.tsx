@@ -49,11 +49,11 @@ const HomeP = () => {
                   sx={{ margin: '0 auto', display: "flex" }}
                   variant="contained" onClick={onImageRemoveAll}>Remove image </Button>
               </Box>
-              <Box
-                sx={{ justifyContent: "center" }}  >
+              <Box sx={{maxHeight: '1000',
+              justifyContent: "center" }}  >
 
                 {imageList.map((image) => (
-                  <img src={image.dataURL} key={"img_to_send"} alt="" height={600} width={800}/>
+                  <img src={image.dataURL} key={"img_to_send"} alt="Your photo dont load fix it if you can" />
                 ))}
               </Box>
             </>
